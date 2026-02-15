@@ -1,4 +1,5 @@
 using LikesAndSwipes.Data;
+using LikesAndSwipes.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,8 @@ namespace LikesAndSwipes
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddTransient<DataRepository>();
 
             var app = builder.Build();
 
