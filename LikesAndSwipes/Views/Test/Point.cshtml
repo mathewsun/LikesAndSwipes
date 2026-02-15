@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Test Point Page";
+}
+@model TestPointPageModel
+
+<div class="text-center">
+    <h1 class="display-4">Test point page</h1>
+    <div id="mycoordinate"></div>
+    <form method="post">
+        <div>
+            <label>X:</label>
+            <input type="text" asp-for="XCoordinate">
+        </div>
+        <div>
+            <label>Y:</label>
+            <input type="text" asp-for="YCoordinate">
+        </div>
+
+        <button type="submit">Send</button>
+    </form>
+</div>
