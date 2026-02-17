@@ -15,6 +15,11 @@ namespace LikesAndSwipes.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder
+               .Entity<User>()
+               .Property(e => e.Created)
+               .HasDefaultValueSql("now()");
+
+            modelBuilder
                .Entity<LocationEntity>()
                .Property(e => e.Created)
                .HasDefaultValueSql("now()");
