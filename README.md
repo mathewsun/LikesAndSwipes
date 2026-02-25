@@ -1,5 +1,7 @@
 # LikesAndSwipes
 
+Figma: https://www.figma.com/design/FyjMt9uKAi5pY2MW4ukQa7/Likes-And-Swipes--Design-?node-id=0-1&t=X6mCexQpCzonVMd6-1
+
 Видео: https://www.youtube.com/watch?v=uHWjsT1mebw
 
 Visual Studio Package Manager Console:
