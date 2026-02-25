@@ -1,4 +1,5 @@
 using LikesAndSwipes.Models;
+using LikesAndSwipes.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,9 +7,18 @@ namespace LikesAndSwipes.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private DataRepository _dataRepository;
+
+        public HomeController(DataRepository dataRepository)
         {
-            return View();
+            _dataRepository = dataRepository;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var result = await _dataRepository.GetAllInterests();
+
+            return View(result);
         }
 
         public IActionResult Privacy()

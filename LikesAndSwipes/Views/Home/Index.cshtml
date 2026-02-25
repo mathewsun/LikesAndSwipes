@@ -6,3 +6,13 @@
     <h1 class="display-4">Welcome</h1>
     <a href="/test">Test page</a>
 </div>
+
+<br />
+<hr />
+<br />
+Ваши увлечения:
+<br />
+@foreach (var item in Model)
+{
+    <div style="padding-right:10px;">@item.Name</div>
+}

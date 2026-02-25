@@ -1,5 +1,6 @@
 ﻿using LikesAndSwipes.Data;
 using LikesAndSwipes.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LikesAndSwipes.Repositories
 {
@@ -30,6 +31,13 @@ namespace LikesAndSwipes.Repositories
             //LocationEntity savedLocation = await _context.Locations.FirstAsync(x => x.Id == generatedId);
 
             return location; // savedLocation;
+        }
+
+        public async Task<List<Interests>> GetAllInterests()
+        {
+            var result = await _context.Interests.ToListAsync();
+
+            return result;
         }
     }
 }
