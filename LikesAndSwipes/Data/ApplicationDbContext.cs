@@ -8,6 +8,10 @@ namespace LikesAndSwipes.Data
     {
         public DbSet<LocationEntity> Locations => Set<LocationEntity>();
 
+        public DbSet<Interests> Interests => Set<Interests>();
+
+        public DbSet<UserInterests> UserInterests => Set<UserInterests>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasPostgresExtension("postgis");
@@ -21,6 +25,16 @@ namespace LikesAndSwipes.Data
 
             modelBuilder
                .Entity<LocationEntity>()
+               .Property(e => e.Created)
+               .HasDefaultValueSql("now()");
+
+            modelBuilder
+               .Entity<Interests>()
+               .Property(e => e.Created)
+               .HasDefaultValueSql("now()");
+
+            modelBuilder
+               .Entity<UserInterests>()
                .Property(e => e.Created)
                .HasDefaultValueSql("now()");
         }
