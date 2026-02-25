@@ -39,5 +39,14 @@ namespace LikesAndSwipes.Repositories
 
             return result;
         }
+
+        public async Task SaveUserFirstName(User user)
+        {
+            var currentUser = await _context.Users.FirstOrDefaultAsync(x => x.Id == user.Id);
+
+            ((User)currentUser).FirstName = user.FirstName;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
