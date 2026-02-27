@@ -2,23 +2,75 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <a href="/test">Test page</a>
+<!-- Logo -->
+<div class="logo">
+	<div class="logo-circle">
+		❤️
+	</div>
+	<h1>Likes And Swipes</h1>
+	<p class="subtitle">Let's create your profile</p>
 </div>
 
-<form method="post">
-    <input type="text" name="name" value="ddddd">
-    <button type="submit">Send</button>
-</form>
+<!-- Card -->
+<section class="card">
 
+	<!-- Progress -->
+	<div class="progress">
+		<div class="progress-bar" data-step="1"></div>
+		<div class="progress-bar" data-step="2"></div>
+		<div class="progress-bar" data-step="3"></div>
+		<div class="progress-bar" data-step="4"></div>
+	</div>
 
-<br />
-<hr />
-<br />
-Ваши увлечения:
-<br />
-@foreach (var item in Model)
-{
-    <div style="padding-right:10px;">@item.Name</div>
-}
+	<p class="step-text">Step <span id="currentStep">1</span> of 4</p>
+
+	<!-- Step 1 -->
+	<div class="form-step active" data-step="1">
+		<h2>What's your name?</h2>
+		<input type="text" id="firstName" placeholder="Enter your first name" />
+		<button class="btn-primary next-btn">Continue</button>
+	</div>
+
+	<!-- Step 2 -->
+	<div class="form-step" data-step="2">
+		<h2>How old are you?</h2>
+		<input type="number"
+			   id="age"
+			   placeholder="Enter your age"
+			   min="18"
+			   max="100" />
+
+		<div class="button-row">
+			<button class="btn-secondary back-btn">Back</button>
+			<button class="btn-primary next-btn">Continue</button>
+		</div>
+	</div>
+
+	<!-- Step 3 -->
+	<div class="form-step" data-step="3">
+		<h2>Add your photos</h2>
+		<p class="sub-text">Add at least 2 photos to continue</p>
+
+		<div class="photo-grid">
+			<!-- 6 Upload Slots -->
+			<label class="photo-slot">
+				<input type="file" accept="image/*" hidden>
+				<span class="upload-icon">+</span>
+			</label>
+
+			<label class="photo-slot"><input type="file" accept="image/*" hidden></label>
+			<label class="photo-slot"><input type="file" accept="image/*" hidden></label>
+			<label class="photo-slot"><input type="file" accept="image/*" hidden></label>
+			<label class="photo-slot"><input type="file" accept="image/*" hidden></label>
+			<label class="photo-slot"><input type="file" accept="image/*" hidden></label>
+		</div>
+
+		<p class="photo-count"><span id="photoCounter">0</span>/6 photos added</p>
+
+		<div class="button-row">
+			<button class="btn-secondary back-btn">Back</button>
+			<button class="btn-primary next-btn" id="photoContinue">Continue</button>
+		</div>
+	</div>
+
+</section>
