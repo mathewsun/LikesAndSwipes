@@ -138,6 +138,7 @@ input {
     background: #f1f1f4;
     margin-bottom: 20px;
     font-size: 14px;
+    font-family: 'Pacifico', cursive;
 }
 
     input:focus {
@@ -221,15 +222,16 @@ input {
     border-radius: 10px;
     border: none;
     background: var(--input-bg);
-    font-size: 14px;
+    font-size: 44px;
     outline: none;
     margin-bottom: 20px;
     transition: 0.3s;
+    box-shadow: 0 0 0 2px #d8c7ff;
 }
 
     input:focus {
         background: #ffffff;
-        box-shadow: 0 0 0 2px #d8c7ff;
+        box-shadow: 0 0 0 2px #9c6bff;
     }
 
 .button-row {
