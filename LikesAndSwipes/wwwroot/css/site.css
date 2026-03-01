@@ -1,65 +1,286 @@
-html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    background: var(--bg-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f7f4fe;
     min-height: 100vh;
-    padding: 20px;
-    margin-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    color: #1b1725;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* main layout */
+.site-header {
+    padding: 20px 24px 12px;
+    background: #ffffff;
+    border-bottom: 1px solid #edeaf5;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+.header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
 }
 
-:root {
-    --bg-color: #f4f2f5;
-    --card-bg: #ffffff;
-    --text-dark: #1f1f1f;
-    --text-light: #6c6c6c;
-    --input-bg: #f1f1f4;
-    --gradient: linear-gradient(90deg, #ff7ac6, #9c6bff);
-    --shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
-    --radius: 16px;
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: #1e1e2c;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Inter', sans-serif;
+    .logo-area span {
+        color: #ff6b8b;
+    }
+
+    .logo-area::before {
+        content: "❤️";
+        font-size: 1.7rem;
+        margin-right: 4px;
+    }
+
+.nav-menu {
+    display: flex;
+    gap: 32px;
+    font-weight: 500;
+}
+
+    .nav-menu a {
+        text-decoration: none;
+        color: #3f3855;
+        font-size: 1.05rem;
+        transition: color 0.1s;
+    }
+
+        .nav-menu a:hover {
+            color: #ff6b8b;
+        }
+
+.auth-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+}
+
+    .auth-links a {
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+.register-link {
+    background: #1e1b2c;
+    color: white;
+    padding: 8px 22px;
+    border-radius: 40px;
+    border: 1px solid #332e44;
+    transition: background 0.15s;
+}
+
+    .register-link:hover {
+        background: #2f2747;
+    }
+
+.login-link {
+    color: #3c334f;
+    font-weight: 600;
+}
+
+    .login-link:hover {
+        color: #ff6b8b;
+    }
+
+/* main card area */
+.main-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
 }
 
 
 
-.container {
-    text-align: center;
+.brand-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.brand-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1b1725;
+}
+
+    .brand-title span {
+        color: #ff6b8b;
+    }
+
+.step-badge {
+    background: #f2edfc;
+    padding: 8px 18px;
+    border-radius: 40px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #433b5a;
+    border: 1px solid #ddd2ef;
+    white-space: nowrap;
+}
+
+.heading-primary {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    color: #17151f;
+    letter-spacing: -0.02em;
+}
+
+.sub-head {
+    font-size: 1rem;
+    color: #6f658a;
+    margin-bottom: 32px;
+    border-left: 4px solid #ffa0b8;
+    padding-left: 18px;
+    background: linear-gradient(to right, #fcf9ff, transparent);
+}
+
+.input-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2e2440;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.input-field {
     width: 100%;
-    max-width: 420px;
+    background: #f8f5ff;
+    border: 1.5px solid #e0d6f2;
+    border-radius: 30px;
+    padding: 18px 26px;
+    font-size: 1.1rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: 0.15s;
+    margin-bottom: 28px;
+}
+
+    .input-field:focus {
+        border-color: #ff7a9e;
+        background: #ffffff;
+        box-shadow: 0 0 0 4px rgba(255,107,139,0.1);
+    }
+
+    .input-field::placeholder {
+        color: #a99dc2;
+        font-weight: 400;
+    }
+
+.continue-btn {
+    background: #1e1b2c;
+    border: none;
+    width: 100%;
+    padding: 18px 24px;
+    border-radius: 40px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: 0.15s;
+    box-shadow: 0 10px 20px -8px rgba(0,0,0,0.3);
+    border: 1px solid #3b334f;
+}
+
+    .continue-btn:hover {
+        background: #2e2645;
+    }
+
+.btn-arrow {
+    font-size: 1.5rem;
+}
+
+/* site footer */
+.site-footer {
+    background: #ffffff;
+    border-top: 1px solid #e7e1f0;
+    padding: 18px 24px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #8279a0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px 28px;
+}
+
+.footer-copy {
+    display: flex;
+    gap: 6px;
+}
+
+.footer-privacy a {
+    color: #5b4d7a;
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px dotted #bfb2da;
+}
+
+    .footer-privacy a:hover {
+        color: #ff6b8b;
+        border-bottom: 1px solid #ff6b8b;
+    }
+
+@media (max-width: 650px) {
+    .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .nav-menu {
+        flex-wrap: wrap;
+        gap: 16px 24px;
+    }
+
+    .auth-links {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .heading-primary {
+        font-size: 1.9rem;
+    }
+
+    .brand-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .site-footer {
+        flex-direction: column;
+        gap: 6px;
+    }
 }
 
 .logo {
