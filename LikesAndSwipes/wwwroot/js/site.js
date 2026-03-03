@@ -99,3 +99,36 @@ photoContinueBtn.addEventListener("click", () => {
         return;
     }
 });
+
+// INTEREST SELECTION
+const interests = document.querySelectorAll(".interest");
+const interestCounter = document.getElementById("interestCounter");
+const finishBtn = document.getElementById("finishBtn");
+
+let selectedInterests = [];
+
+interests.forEach(button => {
+    button.addEventListener("click", () => {
+        const value = button.textContent;
+
+        if (button.classList.contains("selected")) {
+            button.classList.remove("selected");
+            selectedInterests = selectedInterests.filter(i => i !== value);
+        } else {
+            if (selectedInterests.length >= 5) return;
+            button.classList.add("selected");
+            selectedInterests.push(value);
+        }
+
+        interestCounter.textContent = selectedInterests.length;
+    });
+});
+
+finishBtn.addEventListener("click", () => {
+    if (selectedInterests.length < 3) {
+        alert("Please select at least 3 interests.");
+        return;
+    }
+
+    alert("Profile complete! 🎉");
+});
