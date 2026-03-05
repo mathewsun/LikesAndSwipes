@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - LikesAndSwipes</title>
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css?4" asp-append-version="true" />
-    <link rel="stylesheet" href="~/LikesAndSwipes.styles.css" asp-append-version="true" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
@@ -17,8 +15,8 @@
         <div class="nav-left">
             <div class="brand">LikesAndSwipes</div>
             <nav>
-                <a href="#">Home</a>
-                <a href="#">Privacy</a>
+                <a href="/">Home</a>
+                <a href="/Privacy">Privacy</a>
             </nav>
         </div>
         <div class="nav-right">
@@ -26,9 +24,10 @@
         </div>
     </header>
 
-    <div class="main-content">
+    <!-- MAIN -->
+    <main class="main">
         @RenderBody()
-    </div>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">

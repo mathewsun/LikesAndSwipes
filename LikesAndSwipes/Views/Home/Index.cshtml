@@ -2,39 +2,72 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="logo-section">
+<div class="branding">
     <div class="logo-circle">❤️</div>
     <h1>Likes And Swipes</h1>
     <p>Let's create your profile</p>
 </div>
 
-<!-- Card -->
-<section class="card">
+<div class="card">
 
     <!-- Progress -->
     <div class="progress">
         <div class="progress-bar" data-step="1"></div>
         <div class="progress-bar" data-step="2"></div>
         <div class="progress-bar" data-step="3"></div>
-        <div class="progress-bar" data-step="4"></div>
+        <div class="progress-bar"></div>
+        <div class="progress-bar"></div>
     </div>
 
-    <p class="step-text">Step <span id="currentStep">1</span> of 4</p>
+    <span class="step-text">
+        Step <span id="currentStep">1</span> of 5
+    </span>
 
-    <!-- Step 1 -->
+    <!-- STEP 1 -->
     <div class="form-step active" data-step="1">
         <h2>What's your name?</h2>
-        <input type="text" id="firstName" />
+        <input type="text" id="nameInput" placeholder="Enter your first name">
         <button class="btn-primary next-btn">Continue</button>
     </div>
 
-    <!-- Step 2 -->
+    <!-- STEP 2 -->
     <div class="form-step" data-step="2">
         <h2>How old are you?</h2>
-        <input type="number"
-               id="age"
-               min="18"
-               max="100" />
+        <input type="number" id="ageInput" placeholder="Enter your age" min="18">
+        <div class="button-row">
+            <button class="btn-secondary back-btn">Back</button>
+            <button class="btn-primary next-btn">Continue</button>
+        </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="form-step" data-step="3">
+        <h2>Add your photos</h2>
+        <p class="sub-text">Add at least 2 photos to continue</p>
+
+        <div class="photo-grid">
+            <label class="photo-box">
+                <input type="file" accept="image/*" class="photo-input">
+                <span>+</span>
+            </label>
+            <label class="photo-box">
+                <input type="file" accept="image/*" class="photo-input">
+            </label>
+            <label class="photo-box">
+                <input type="file" accept="image/*" class="photo-input">
+            </label>
+            <label class="photo-box">
+                <input type="file" accept="image/*" class="photo-input">
+            </label>
+            <label class="photo-box">
+                <input type="file" accept="image/*" class="photo-input">
+            </label>
+            <label class="photo-box">
+                <input type="file" accept="image/*" class="photo-input">
+            </label>
+        </div>
+
+        <p id="photoCount">0/6 photos added</p>
 
         <div class="button-row">
             <button class="btn-secondary back-btn">Back</button>
@@ -42,73 +75,36 @@
         </div>
     </div>
 
-    <!-- Step 3 -->
-    <div class="form-step" data-step="3">
-        <h2>Add your photos</h2>
-        <p class="sub-text">Add at least 2 photos to continue</p>
-
-        <div class="photo-grid">
-            <!-- 6 Upload Slots -->
-            <label class="photo-slot">
-                <input type="file" accept="image/*" hidden>
-                <span class="upload-icon">+</span>
-            </label>
-
-            <label class="photo-slot"><input type="file" accept="image/*" hidden></label>
-            <label class="photo-slot"><input type="file" accept="image/*" hidden></label>
-            <label class="photo-slot"><input type="file" accept="image/*" hidden></label>
-            <label class="photo-slot"><input type="file" accept="image/*" hidden></label>
-            <label class="photo-slot"><input type="file" accept="image/*" hidden></label>
-        </div>
-
-        <p class="photo-count"><span id="photoCounter">0</span>/6 photos added</p>
-
-        <div class="button-row">
-            <button class="btn-secondary back-btn">Back</button>
-            <button class="btn-primary next-btn" id="photoContinue">Continue</button>
-        </div>
-    </div>
-
-    <!-- Step 4 -->
+    <!-- STEP 4 -->
     <div class="form-step" data-step="4">
-        <h2>Your interests</h2>
-        <p class="sub-text">
-            Select at least 3 interests (max 5)
-        </p>
-
-        <div class="interests-grid">
-            <button class="interest">Travel</button>
-            <button class="interest">Photography</button>
-            <button class="interest">Hiking</button>
-            <button class="interest">Coffee</button>
-            <button class="interest">Cooking</button>
-            <button class="interest">Music</button>
-            <button class="interest">Wine</button>
-            <button class="interest">Art</button>
-            <button class="interest">Yoga</button>
-            <button class="interest">Fitness</button>
-            <button class="interest">Reading</button>
-            <button class="interest">Movies</button>
-            <button class="interest">Rock Climbing</button>
-            <button class="interest">Technology</button>
-            <button class="interest">Gaming</button>
-            <button class="interest">Plants</button>
-            <button class="interest">Museums</button>
-            <button class="interest">Dancing</button>
-            <button class="interest">Beach</button>
-            <button class="interest">Architecture</button>
-            <button class="interest">Beer</button>
-            <button class="interest">Concerts</button>
+        <h2>Select interests</h2>
+        <div class="interests">
+            <button type="button" class="interest">Travel</button>
+            <button type="button" class="interest">Photography</button>
+            <button type="button" class="interest">Hiking</button>
+            <button type="button" class="interest">Coffee</button>
+            <button type="button" class="interest">Music</button>
+            <button type="button" class="interest">Movies</button>
+            <button type="button" class="interest">Gaming</button>
+            <button type="button" class="interest">Fitness</button>
         </div>
-
-        <p class="interest-count">
-            <span id="interestCounter">0</span>/5 interests selected
-        </p>
-
+        <p id="interestCount">0/5 selected</p>
         <div class="button-row">
             <button class="btn-secondary back-btn">Back</button>
-            <button class="btn-primary" id="finishBtn">Start Swiping</button>
+            <button class="btn-primary next-btn">Next</button>
         </div>
     </div>
 
-</section>
+    <!-- STEP 5 -->
+    <div class="form-step" data-step="5">
+        <h2>Create account</h2>
+        <input type="text" id="email" placeholder="Email or phone" />
+        <input type="password" id="password" placeholder="Password" />
+        <input type="password" id="confirmPassword" placeholder="Confirm password" />
+        <div class="button-row">
+            <button class="btn-secondary back-btn">Back</button>
+            <button class="btn-primary" id="registerBtn">Register</button>
+        </div>
+    </div>
+
+</div>

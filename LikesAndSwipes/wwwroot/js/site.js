@@ -1,10 +1,9 @@
-﻿const steps = document.querySelectorAll(".form-step");
-const progressBars = document.querySelectorAll(".progress-bar");
-const nextBtns = document.querySelectorAll(".next-btn");
-const backBtns = document.querySelectorAll(".back-btn");
-const currentStepText = document.getElementById("currentStep");
+﻿let currentStep = 1;
+const totalSteps = 5;
 
-let currentStep = 1;
+const steps = document.querySelectorAll(".form-step");
+const progressBars = document.querySelectorAll(".progress-bar");
+const currentStepText = document.getElementById("currentStep");
 
 function updateUI() {
     steps.forEach(step => {
@@ -14,9 +13,9 @@ function updateUI() {
         }
     });
 
-    progressBars.forEach(bar => {
+    progressBars.forEach((bar, index) => {
         bar.classList.remove("active");
-        if (parseInt(bar.dataset.step) <= currentStep) {
+        if (index < currentStep) {
             bar.classList.add("active");
         }
     });
@@ -24,111 +23,110 @@ function updateUI() {
     currentStepText.textContent = currentStep;
 }
 
-nextBtns.forEach(btn => {
+document.querySelectorAll(".next-btn").forEach(btn => {
     btn.addEventListener("click", () => {
+
         if (currentStep === 1) {
-            const name = document.getElementById("firstName").value.trim();
-            if (name.length < 2) {
-                alert("Please enter a valid name.");
+            const name = document.getElementById("nameInput").value.trim();
+            if (!name) {
+                alert("Please enter your name.");
                 return;
             }
         }
 
         if (currentStep === 2) {
-            const age = document.getElementById("age").value;
-            if (age < 18 || age > 100) {
-                alert("Age must be between 18 and 100.");
+            const age = parseInt(document.getElementById("ageInput").value);
+            if (!age || age < 18) {
+                alert("You must be at least 18 years old.");
                 return;
             }
         }
 
-        if (currentStep < 4) {
-            currentStep++;
-            updateUI();
+        if (currentStep === 3) {
+            const uploaded = document.querySelectorAll(".photo-box img").length;
+            if (uploaded < 2) {
+                alert("Please upload at least 2 photos.");
+                return;
+            }
         }
+
+        currentStep++;
+        updateUI();
     });
 });
 
-backBtns.forEach(btn => {
+document.querySelectorAll(".back-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-        if (currentStep > 1) {
-            currentStep--;
-            updateUI();
-        }
+        currentStep--;
+        updateUI();
     });
 });
 
-updateUI();
+/* Photo preview */
+const photoInputs = document.querySelectorAll(".photo-input");
+const photoCount = document.getElementById("photoCount");
 
-// PHOTO STEP FUNCTIONALITY
-const photoSlots = document.querySelectorAll(".photo-slot input");
-const photoCounter = document.getElementById("photoCounter");
-const photoContinueBtn = document.getElementById("photoContinue");
-
-let photoCount = 0;
-
-photoSlots.forEach(input => {
+photoInputs.forEach(input => {
     input.addEventListener("change", function () {
-        if (this.files && this.files[0]) {
-            const reader = new FileReader();
+        const file = this.files[0];
+        if (!file) return;
 
-            reader.onload = e => {
-                const img = document.createElement("img");
-                img.src = e.target.result;
+        const reader = new FileReader();
+        reader.onload = e => {
+            const img = document.createElement("img");
+            img.src = e.target.result;
 
-                const parent = this.parentElement;
-                parent.innerHTML = "";
-                parent.appendChild(img);
+            const parent = this.parentElement;
+            parent.innerHTML = "";
+            parent.appendChild(img);
 
-                updatePhotoCount();
-            };
-
-            reader.readAsDataURL(this.files[0]);
-        }
+            updatePhotoCount();
+        };
+        reader.readAsDataURL(file);
     });
 });
 
 function updatePhotoCount() {
-    photoCount = document.querySelectorAll(".photo-slot img").length;
-    photoCounter.textContent = photoCount;
+    const count = document.querySelectorAll(".photo-box img").length;
+    photoCount.textContent = `${count}/6 photos added`;
 }
 
-photoContinueBtn.addEventListener("click", () => {
-    if (photoCount < 2) {
-        alert("Please upload at least 2 photos.");
-        return;
-    }
-});
+updateUI();
 
-// INTEREST SELECTION
+/* Interests logic */
 const interests = document.querySelectorAll(".interest");
-const interestCounter = document.getElementById("interestCounter");
-const finishBtn = document.getElementById("finishBtn");
+const interestCount = document.getElementById("interestCount");
 
-let selectedInterests = [];
+interests.forEach(btn => {
+    btn.addEventListener("click", () => {
+        btn.classList.toggle("selected");
 
-interests.forEach(button => {
-    button.addEventListener("click", () => {
-        const value = button.textContent;
+        const selected = document.querySelectorAll(".interest.selected");
 
-        if (button.classList.contains("selected")) {
-            button.classList.remove("selected");
-            selectedInterests = selectedInterests.filter(i => i !== value);
-        } else {
-            if (selectedInterests.length >= 5) return;
-            button.classList.add("selected");
-            selectedInterests.push(value);
+        if (selected.length > 5) {
+            btn.classList.remove("selected");
+            return;
         }
 
-        interestCounter.textContent = selectedInterests.length;
+        interestCount.textContent = `${selected.length}/5 selected`;
     });
 });
 
-finishBtn.addEventListener("click", () => {
-    if (selectedInterests.length < 3) {
-        alert("Please select at least 3 interests.");
+/* Registration validation */
+document.getElementById("registerBtn").addEventListener("click", () => {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (!email || !password || !confirmPassword) {
+        alert("Please fill all fields.");
         return;
     }
 
-    alert("Profile complete! 🎉");
+    if (password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+    }
+
+    alert("Registration complete 🎉");
 });
