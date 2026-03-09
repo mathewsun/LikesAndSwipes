@@ -128,5 +128,5 @@ document.getElementById("registerBtn").addEventListener("click", () => {
         return;
     }
 
-    alert("Registration complete 🎉");
+    //alert("Registration complete 🎉");
 });

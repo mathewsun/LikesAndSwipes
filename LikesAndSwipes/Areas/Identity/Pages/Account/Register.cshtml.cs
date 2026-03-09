@@ -2,15 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using LikesAndSwipes.Models;
+using LikesAndSwipes.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -19,6 +12,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LikesAndSwipes.Areas.Identity.Pages.Account
 {
@@ -30,13 +31,15 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private DataRepository _dataRepository;
 
         public RegisterModel(
             UserManager<User> userManager,
             IUserStore<User> userStore,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            DataRepository dataRepository)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +47,7 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _dataRepository = dataRepository;
         }
 
         /// <summary>
@@ -98,6 +102,16 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            /// <summary>
+            ///     User Name
+            /// </summary>
+            public string Name { get; set; }
+
+            /// <summary>
+            ///     User Age
+            /// </summary>
+            public int Age { get; set; }
         }
 
 
@@ -121,6 +135,10 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    User newUser = new User() { Id = user.Id, FirstName = Input.Name, Age = Input.Age };
+
+                    await _dataRepository.SaveUserRegistrationData(newUser);
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);

@@ -4,63 +4,120 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<div class="row">
-    <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email or phone</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.Password">Password</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
-    </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
-    </div>
+<div class="branding">
+    <div class="logo-circle">❤️</div>
+    <h1>Likes And Swipes</h1>
+    <p>Let's create your profile</p>
 </div>
+<form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+    <div class="card">
+
+        <!-- Progress -->
+        <div class="progress">
+            <div class="progress-bar" data-step="1"></div>
+            <div class="progress-bar" data-step="2"></div>
+            <div class="progress-bar" data-step="3"></div>
+            <div class="progress-bar"></div>
+            <div class="progress-bar"></div>
+        </div>
+
+        <span class="step-text">
+            Step <span id="currentStep">1</span> of 5
+        </span>
+
+        <!-- STEP 1 -->
+        <div class="form-step active" data-step="1">
+            <h2>What's your name?</h2>
+            <input type="text" asp-for="Input.Name" id="nameInput" placeholder="Enter your first name">
+            <button type="button" class="btn-primary next-btn">Continue</button>
+        </div>
+
+        <!-- STEP 2 -->
+        <div class="form-step" data-step="2">
+            <h2>How old are you?</h2>
+            <input type="number" asp-for="Input.Age" id="ageInput" placeholder="Enter your age" min="18">
+            <div class="button-row">
+                <button type="button" class="btn-secondary back-btn">Back</button>
+                <button type="button" class="btn-primary next-btn">Continue</button>
+            </div>
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="form-step" data-step="3">
+            <h2>Add your photos</h2>
+            <p class="sub-text">Add at least 2 photos to continue</p>
+
+            <div class="photo-grid">
+                <label class="photo-box">
+                    <input type="file" accept="image/*" class="photo-input">
+                    <span>+</span>
+                </label>
+                <label class="photo-box">
+                    <input type="file" accept="image/*" class="photo-input">
+                </label>
+                <label class="photo-box">
+                    <input type="file" accept="image/*" class="photo-input">
+                </label>
+                <label class="photo-box">
+                    <input type="file" accept="image/*" class="photo-input">
+                </label>
+                <label class="photo-box">
+                    <input type="file" accept="image/*" class="photo-input">
+                </label>
+                <label class="photo-box">
+                    <input type="file" accept="image/*" class="photo-input">
+                </label>
+            </div>
+
+            <p id="photoCount">0/6 photos added</p>
+
+            <div class="button-row">
+                <button type="button" class="btn-secondary back-btn">Back</button>
+                <button type="button" class="btn-primary next-btn">Continue</button>
+            </div>
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="form-step" data-step="4">
+            <h2>Select interests</h2>
+            <div class="interests">
+                <button type="button" class="interest">Travel</button>
+                <button type="button" class="interest">Photography</button>
+                <button type="button" class="interest">Hiking</button>
+                <button type="button" class="interest">Coffee</button>
+                <button type="button" class="interest">Cooking</button>
+                <button type="button" class="interest">Music</button>
+                <button type="button" class="interest">Art</button>
+                <button type="button" class="interest">Wine</button>
+                <button type="button" class="interest">Yoga</button>
+                <button type="button" class="interest">Fitness</button>
+                <button type="button" class="interest">Reading</button>
+                <button type="button" class="interest">Movies</button>
+                <button type="button" class="interest">Rock climbing</button>
+                <button type="button" class="interest">Technology</button>
+                <button type="button" class="interest">Gaming</button>
+            </div>
+            <p id="interestCount">0/5 selected</p>
+            <div class="button-row">
+                <button type="button" class="btn-secondary back-btn">Back</button>
+                <button type="button" class="btn-primary next-btn">Next</button>
+            </div>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="form-step" data-step="5">
+            <h2>Create account</h2>
+            <input type="text" asp-for="Input.Email" id="email" placeholder="Email or phone" />
+            <input type="password" asp-for="Input.Password" id="password" placeholder="Password" />
+            <input type="password" asp-for="Input.ConfirmPassword" id="confirmPassword" placeholder="Confirm password" />
+            <div class="button-row">
+                <button type="button" class="btn-secondary back-btn">Back</button>
+                <button class="btn-primary" id="registerBtn" type="submit">Register</button>
+            </div>
+        </div>
+
+    </div>
+</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
