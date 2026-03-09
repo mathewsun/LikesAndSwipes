@@ -1,117 +1,217 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = null;
 }
 
-<div class="branding">
-    <div class="logo-circle">❤️</div>
-    <h1>Likes And Swipes</h1>
-    <p>Let's create your profile</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Likes and Swipes - Find Your Perfect Match</title>
+    <link rel="stylesheet" href="/css/mainpagestyles.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <nav class="nav">
+                <div class="logo">
+                    <svg class="heart-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                    </svg>
+                    <span class="logo-text">Likes and Swipes</span>
+                </div>
+                <button class="sign-in-btn" onclick="location.href = '/Identity/Account/Login';">Sign In</button>
+            </nav>
+        </header>
 
-<div class="card">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-grid">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Find Your Perfect Match</h1>
+                        <p class="hero-description">
+                            Connect with amazing people who share your interests and values.
+                            Start your journey to meaningful relationships today.
+                        </p>
+                        <button class="cta-button" onclick="location.href = '/Identity/Account/Register';">
+                            Join Now - It's Free
+                        </button>
+                        <div class="hero-features">
+                            <div class="feature-badge">
+                                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                </svg>
+                                <span>Safe & Secure</span>
+                            </div>
+                            <div class="feature-badge">
+                                <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                                </svg>
+                                <span>Verified Profiles</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <img src="https://images.unsplash.com/photo-1514846528774-8de9d4a07023?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoYXBweSUyMGNvdXBsZSUyMHJvbWFudGljJTIwZGF0ZXxlbnwxfHx8fDE3NzMwNTExNDF8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                             alt="Happy couple"
+                             class="hero-img">
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <!-- Progress -->
-    <div class="progress">
-        <div class="progress-bar" data-step="1"></div>
-        <div class="progress-bar" data-step="2"></div>
-        <div class="progress-bar" data-step="3"></div>
-        <div class="progress-bar"></div>
-        <div class="progress-bar"></div>
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Why Choose LoveConnect?</h2>
+                    <p class="section-subtitle">The smarter way to find meaningful connections</p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <svg class="feature-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Smart Matching</h3>
+                        <p class="feature-description">
+                            Our advanced algorithm connects you with compatible people based on your interests, values, and preferences.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <svg class="feature-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Easy Communication</h3>
+                        <p class="feature-description">
+                            Chat instantly with your matches. Share photos, videos, and make video calls to get to know each other better.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper">
+                            <svg class="feature-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                        </div>
+                        <h3 class="feature-title">Safe & Secure</h3>
+                        <p class="feature-description">
+                            Your privacy is our priority. All profiles are verified and your data is protected with encryption.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Success Stories -->
+        <section class="success-stories">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Success Stories</h2>
+                    <p class="section-subtitle">Join thousands of happy couples who found love</p>
+                </div>
+
+                <div class="stories-grid">
+                    <div class="story-card">
+                        <div class="story-header">
+                            <img src="https://images.unsplash.com/photo-1760574735049-4ecb7b90f724?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkaXZlcnNlJTIwcGVvcGxlJTIwc21pbGluZyUyMGZyaWVuZHN8ZW58MXx8fHwxNzczMDUxMTQyfDA&ixlib=rb-4.1.0&q=80&w=1080"
+                                 alt="Happy couple"
+                                 class="story-avatar">
+                            <div class="story-info">
+                                <h4 class="story-name">Sarah & Mike</h4>
+                                <p class="story-time">Together for 2 years</p>
+                            </div>
+                        </div>
+                        <p class="story-text">
+                            "We met on LoveConnect and it was love at first chat! The platform made it so easy to connect with someone who truly understands me."
+                        </p>
+                    </div>
+
+                    <div class="story-card">
+                        <div class="story-header">
+                            <img src="https://images.unsplash.com/photo-1613146566277-5bee43de9b2c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2ZmZWUlMjBkYXRlJTIwbWVldGluZ3xlbnwxfHx8fDE3NzMwNTExNDJ8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                                 alt="Coffee date"
+                                 class="story-avatar">
+                            <div class="story-info">
+                                <h4 class="story-name">Emma & James</h4>
+                                <p class="story-time">Married 1 year</p>
+                            </div>
+                        </div>
+                        <p class="story-text">
+                            "I never thought I'd find someone online, but LoveConnect proved me wrong. We're now happily married and expecting our first child!"
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-box">
+                    <h2 class="cta-title">Ready to Find Your Perfect Match?</h2>
+                    <p class="cta-description">Join millions of singles looking for meaningful connections</p>
+                    <button class="cta-button-white" onclick="location.href = '/Identity/Account/Register';">
+                        Create Your Free Account
+                    </button>
+                    <p class="cta-disclaimer">
+                        No credit card required • Free to join • Cancel anytime
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <div class="footer-logo">
+                            <svg class="heart-icon-footer" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                            </svg>
+                            <span class="footer-logo-text">LoveConnect</span>
+                        </div>
+                        <p class="footer-tagline">Making meaningful connections since 2024</p>
+                    </div>
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Company</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Press</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Support</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Safety Tips</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col">
+                        <h4 class="footer-heading">Legal</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                            <li><a href="#">Cookie Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2026 LoveConnect. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
     </div>
-
-    <span class="step-text">
-        Step <span id="currentStep">1</span> of 5
-    </span>
-
-    <!-- STEP 1 -->
-    <div class="form-step active" data-step="1">
-        <h2>What's your name?</h2>
-        <input type="text" id="nameInput" placeholder="Enter your first name">
-        <button class="btn-primary next-btn">Continue</button>
-    </div>
-
-    <!-- STEP 2 -->
-    <div class="form-step" data-step="2">
-        <h2>How old are you?</h2>
-        <input type="number" id="ageInput" placeholder="Enter your age" min="18">
-        <div class="button-row">
-            <button class="btn-secondary back-btn">Back</button>
-            <button class="btn-primary next-btn">Continue</button>
-        </div>
-    </div>
-
-    <!-- STEP 3 -->
-    <div class="form-step" data-step="3">
-        <h2>Add your photos</h2>
-        <p class="sub-text">Add at least 2 photos to continue</p>
-
-        <div class="photo-grid">
-            <label class="photo-box">
-                <input type="file" accept="image/*" class="photo-input">
-                <span>+</span>
-            </label>
-            <label class="photo-box">
-                <input type="file" accept="image/*" class="photo-input">
-            </label>
-            <label class="photo-box">
-                <input type="file" accept="image/*" class="photo-input">
-            </label>
-            <label class="photo-box">
-                <input type="file" accept="image/*" class="photo-input">
-            </label>
-            <label class="photo-box">
-                <input type="file" accept="image/*" class="photo-input">
-            </label>
-            <label class="photo-box">
-                <input type="file" accept="image/*" class="photo-input">
-            </label>
-        </div>
-
-        <p id="photoCount">0/6 photos added</p>
-
-        <div class="button-row">
-            <button class="btn-secondary back-btn">Back</button>
-            <button class="btn-primary next-btn">Continue</button>
-        </div>
-    </div>
-
-    <!-- STEP 4 -->
-    <div class="form-step" data-step="4">
-        <h2>Select interests</h2>
-        <div class="interests">
-            <button type="button" class="interest">Travel</button>
-            <button type="button" class="interest">Photography</button>
-            <button type="button" class="interest">Hiking</button>
-            <button type="button" class="interest">Coffee</button>
-            <button type="button" class="interest">Cooking</button>
-            <button type="button" class="interest">Music</button>
-            <button type="button" class="interest">Art</button>
-            <button type="button" class="interest">Wine</button>
-            <button type="button" class="interest">Yoga</button>
-            <button type="button" class="interest">Fitness</button>
-            <button type="button" class="interest">Reading</button>
-            <button type="button" class="interest">Movies</button>
-            <button type="button" class="interest">Rock climbing</button>
-            <button type="button" class="interest">Technology</button>
-            <button type="button" class="interest">Gaming</button>
-        </div>
-        <p id="interestCount">0/5 selected</p>
-        <div class="button-row">
-            <button class="btn-secondary back-btn">Back</button>
-            <button class="btn-primary next-btn">Next</button>
-        </div>
-    </div>
-
-    <!-- STEP 5 -->
-    <div class="form-step" data-step="5">
-        <h2>Create account</h2>
-        <input type="text" id="email" placeholder="Email or phone" />
-        <input type="password" id="password" placeholder="Password" />
-        <input type="password" id="confirmPassword" placeholder="Confirm password" />
-        <div class="button-row">
-            <button class="btn-secondary back-btn">Back</button>
-            <button class="btn-primary" id="registerBtn">Register</button>
-        </div>
-    </div>
-
-</div>
+</body>
+</html>
