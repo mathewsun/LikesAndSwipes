@@ -17,6 +17,13 @@ namespace LikesAndSwipes.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId != null)
+            {
+                return RedirectToAction("Index", "Match");
+            }
+
             var result = await _dataRepository.GetAllInterests();
 
             return View(result);
