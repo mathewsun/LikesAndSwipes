@@ -297,3 +297,28 @@ input {
         color: white;
         border: none;
     }
+
+.login-link {
+    display: inline;
+}
+
+.form-inline {
+    display: inline;
+}
+
+.button-link {
+    /* Basic button styling */
+    padding: 10px 15px;
+    background-color: #007bff; /* Example color */
+    color: white;
+    text-decoration: none; /* Removes default underline */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer; /* Ensures it looks clickable */
+    display: inline-block; /* Allows padding/margin adjustments */
+    text-align: center;
+}
+
+    .button-link:hover {
+        background-color: #0056b3; /* Darker color on hover */
+    }
