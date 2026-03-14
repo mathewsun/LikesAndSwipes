@@ -3,7 +3,7 @@
     --white: #ffffff;
     --text-dark: #111;
     --text-light: #6b6b6b;
-    --gradient: linear-gradient(90deg, #ff7ac6, #9c6bff);
+    --gradient: linear-gradient(90deg, #f6339a, #9810fa);
     --radius: 16px;
     --shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
 }
@@ -293,7 +293,7 @@ input {
 }
 
     .interest.selected {
-        background: linear-gradient(to right, #ff5fa2, #9c6bff);
+        background: linear-gradient(to right, #f6339a, #9810fa);
         color: white;
         border: none;
     }
