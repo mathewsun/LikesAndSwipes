@@ -62,6 +62,24 @@ document.querySelectorAll(".back-btn").forEach(btn => {
     });
 });
 
+/* 1 step check name not empty */
+//const inputName = document.getElementById('nameInput');
+//const buttonNextName = currentElement.nextElementSibling;
+
+//const inputHandler = function (e) {
+//    if (inputName.length > 0) {
+//        buttonNextName.classList.add('MyClass');
+//    } else {
+//        buttonNextName.classList.remove('MyClass');
+//    }
+//}
+
+//inputName.addEventListener('input', inputHandler);
+//inputName.addEventListener('propertychange', inputHandler);
+
+
+
+
 /* Photo preview */
 const photoInputs = document.querySelectorAll(".photo-input");
 const photoCount = document.getElementById("photoCount");
