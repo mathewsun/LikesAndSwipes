@@ -6,7 +6,7 @@
         location: 'New York, NY',
         occupation: 'Marketing Manager',
         bio: 'Love exploring new cafes and hiking trails. Looking for someone who enjoys spontaneous adventures and good conversations over coffee.',
-        image: 'https://images.unsplash.com/photo-1649589244330-09ca58e4fa64?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b21hbiUyMHBvcnRyYWl0JTIwcHJvZmVzc2lvbmFsfGVufDF8fHx8MTc3MzQ5NDI0N3ww&ixlib=rb-4.1.0&q=80&w=1080',
+        image: '/img/match_photo_1.jpg',
         interests: ['Coffee', 'Hiking', 'Photography', 'Travel'],
     },
     {
@@ -16,7 +16,7 @@
         location: 'Los Angeles, CA',
         occupation: 'Software Engineer',
         bio: 'Tech enthusiast and weekend chef. I code by day and cook gourmet meals by night. Looking for my sous chef in life!',
-        image: 'https://images.unsplash.com/photo-1554765345-6ad6a5417cde?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBwb3J0cmFpdCUyMHByb2Zlc3Npb25hbHxlbnwxfHx8fDE3NzM0NzM1MjB8MA&ixlib=rb-4.1.0&q=80&w=1080',
+        image: '/img/match_photo_2.jpg',
         interests: ['Cooking', 'Gaming', 'Fitness', 'Tech'],
     },
     {
@@ -26,7 +26,7 @@
         location: 'Chicago, IL',
         occupation: 'Graphic Designer',
         bio: 'Creative soul with a passion for art and music. Spend my weekends at concerts or sketching in the park. Let\'s create something beautiful together!',
-        image: 'https://images.unsplash.com/photo-1561648512-2d9c26a7768b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHdvbWFuJTIwc21pbGUlMjBvdXRkb29yfGVufDF8fHx8MTc3MzUwMTU0OXww&ixlib=rb-4.1.0&q=80&w=1080',
+        image: '/img/match_photo_3.jpg',
         interests: ['Art', 'Music', 'Design', 'Concerts'],
     },
     {
@@ -36,7 +36,7 @@
         location: 'San Francisco, CA',
         occupation: 'Photographer',
         bio: 'Capturing moments and chasing sunsets. Adventure seeker who loves road trips and finding hidden gems. Ready to explore the world with someone special.',
-        image: 'https://images.unsplash.com/photo-1695485121912-25c7ea05119c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBjYXN1YWwlMjBwb3J0cmFpdHxlbnwxfHx8fDE3NzM0NzczNTh8MA&ixlib=rb-4.1.0&q=80&w=1080',
+        image: '/img/match_photo_5.jpg',
         interests: ['Photography', 'Travel', 'Nature', 'Road Trips'],
     },
     {
@@ -46,7 +46,7 @@
         location: 'Miami, FL',
         occupation: 'Yoga Instructor',
         bio: 'Beach lover and wellness enthusiast. Finding balance through yoga, meditation, and ocean swims. Looking for positive vibes and authentic connections.',
-        image: 'https://images.unsplash.com/photo-1650895422057-355060e05c95?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b21hbiUyMGJlYWNoJTIwcG9ydHJhaXR8ZW58MXx8fHwxNzczNTAxNTUwfDA&ixlib=rb-4.1.0&q=80&w=1080',
+        image: '/img/match_photo_6.jpg',
         interests: ['Yoga', 'Wellness', 'Beach', 'Meditation'],
     },
     {
@@ -56,7 +56,7 @@
         location: 'Austin, TX',
         occupation: 'Musician',
         bio: 'Music is my life! From acoustic sessions to live performances, I live for the rhythm. Let\'s create our own soundtrack together.',
-        image: 'https://images.unsplash.com/photo-1523287409476-a9e70a25af3f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMG1hbiUyMG91dGRvb3J8ZW58MXx8fHwxNzczMzg4Nzc1fDA&ixlib=rb-4.1.0&q=80&w=1080',
+        image: '/img/match_photo_7.jpg',
         interests: ['Music', 'Guitar', 'Live Shows', 'Songwriting'],
     },
 ];
