@@ -223,22 +223,22 @@ class DatingApp {
         }, 500);
     }
 
-    superLike() {
-        const profile = this.profiles[this.currentIndex];
+    //superLike() {
+    //    const profile = this.profiles[this.currentIndex];
 
-        this.swipeHistory.push(this.currentIndex);
-        document.getElementById('undoBtn').disabled = false;
+    //    this.swipeHistory.push(this.currentIndex);
+    //    document.getElementById('undoBtn').disabled = false;
 
-        if (Math.random() > 0.4) {
-            this.showMatch(profile);
-        }
+    //    if (Math.random() > 0.4) {
+    //        this.showMatch(profile);
+    //    }
 
-        this.currentCard.classList.add('swiped-right');
-        setTimeout(() => {
-            this.currentIndex++;
-            this.renderCards();
-        }, 500);
-    }
+    //    this.currentCard.classList.add('swiped-right');
+    //    setTimeout(() => {
+    //        this.currentIndex++;
+    //        this.renderCards();
+    //    }, 500);
+    //}
 
     undo() {
         if (this.swipeHistory.length === 0) return;
