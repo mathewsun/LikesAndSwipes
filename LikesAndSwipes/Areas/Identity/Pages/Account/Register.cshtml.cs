@@ -141,7 +141,13 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    User newUser = new User() { Id = user.Id, FirstName = Input.Name, Sex = Input.Sex ?? false, Age = Input.Age };
+                    User newUser = new User()
+                    {
+                        Id = user.Id,
+                        FirstName = Input.Name,
+                        Sex = Input.Sex ?? false,
+                        Age = Input.Age
+                    };
 
                     await _dataRepository.SaveUserRegistrationData(newUser);
 
