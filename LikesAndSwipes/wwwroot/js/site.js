@@ -4,6 +4,8 @@ const totalSteps = 6;
 const steps = document.querySelectorAll(".form-step");
 const progressBars = document.querySelectorAll(".progress-bar");
 const currentStepText = document.getElementById("currentStep");
+const sexInput = document.getElementById("sexInput");
+const genderOptions = document.querySelectorAll(".gender-option");
 
 function updateUI() {
     steps.forEach(step => {
@@ -86,6 +88,13 @@ document.querySelectorAll(".back-btn").forEach(btn => {
 //inputName.addEventListener('propertychange', inputHandler);
 
 
+genderOptions.forEach(option => {
+    option.addEventListener("click", () => {
+        genderOptions.forEach(btn => btn.classList.remove("selected"));
+        option.classList.add("selected");
+        sexInput.value = option.dataset.sex;
+    });
+});
 
 
 /* Photo preview */
