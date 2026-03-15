@@ -29,6 +29,7 @@
     cursor: grab;
     transition: transform 0.3s ease, opacity 0.3s ease;
     user-select: none;
+    padding: 0;
 }
 
     .card.dragging {
