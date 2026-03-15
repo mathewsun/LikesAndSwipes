@@ -54,6 +54,7 @@ namespace LikesAndSwipes.Repositories
             currentUser.FirstName = user.FirstName;
             currentUser.Age = user.Age;
             currentUser.UserName = user.FirstName;
+            currentUser.Sex = user.Sex;
 
             await _context.SaveChangesAsync();
         }

@@ -1,9 +1,11 @@
 ﻿let currentStep = 1;
-const totalSteps = 5;
+const totalSteps = 6;
 
 const steps = document.querySelectorAll(".form-step");
 const progressBars = document.querySelectorAll(".progress-bar");
 const currentStepText = document.getElementById("currentStep");
+const sexInput = document.getElementById("sexInput");
+const genderOptions = document.querySelectorAll(".gender-option");
 
 function updateUI() {
     steps.forEach(step => {
@@ -35,6 +37,14 @@ document.querySelectorAll(".next-btn").forEach(btn => {
         }
 
         if (currentStep === 2) {
+            const selectedSex = document.querySelector('input[name="Input.Sex"]:checked');
+            if (!selectedSex) {
+                alert("Please select your gender.");
+                return;
+            }
+        }
+
+        if (currentStep === 3) {
             const age = parseInt(document.getElementById("ageInput").value);
             if (!age || age < 18) {
                 alert("You must be at least 18 years old.");
@@ -42,7 +52,7 @@ document.querySelectorAll(".next-btn").forEach(btn => {
             }
         }
 
-        if (currentStep === 3) {
+        if (currentStep === 4) {
             const uploaded = document.querySelectorAll(".photo-box img").length;
             if (uploaded < 2) {
                 alert("Please upload at least 2 photos.");
@@ -78,6 +88,13 @@ document.querySelectorAll(".back-btn").forEach(btn => {
 //inputName.addEventListener('propertychange', inputHandler);
 
 
+genderOptions.forEach(option => {
+    option.addEventListener("click", () => {
+        genderOptions.forEach(btn => btn.classList.remove("selected"));
+        option.classList.add("selected");
+        sexInput.value = option.dataset.sex;
+    });
+});
 
 
 /* Photo preview */

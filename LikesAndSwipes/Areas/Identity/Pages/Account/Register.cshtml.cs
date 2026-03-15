@@ -109,6 +109,12 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             public string Name { get; set; }
 
             /// <summary>
+            ///     User Sex
+            /// </summary>
+            [Required]
+            public bool? Sex { get; set; }
+
+            /// <summary>
             ///     User Age
             /// </summary>
             public int Age { get; set; }
@@ -135,7 +141,13 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    User newUser = new User() { Id = user.Id, FirstName = Input.Name, Age = Input.Age };
+                    User newUser = new User()
+                    {
+                        Id = user.Id,
+                        FirstName = Input.Name,
+                        Sex = Input.Sex ?? false,
+                        Age = Input.Age
+                    };
 
                     await _dataRepository.SaveUserRegistrationData(newUser);
 
