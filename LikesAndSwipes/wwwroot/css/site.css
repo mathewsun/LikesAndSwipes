@@ -162,6 +162,28 @@ input {
         background: white;
     }
 
+.gender-options {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.gender-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #f3f3f6;
+    cursor: pointer;
+}
+
+.gender-option input {
+    width: auto;
+    margin: 0;
+}
+
 .button-row {
     display: flex;
     gap: 12px;
