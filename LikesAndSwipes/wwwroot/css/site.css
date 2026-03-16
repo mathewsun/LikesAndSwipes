@@ -350,3 +350,32 @@ input {
     .button-link:hover {
         background-color: #0056b3; /* Darker color on hover */
     }
+
+.preference-group {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 12px 14px;
+    background: #f8f8fb;
+    margin-bottom: 12px;
+}
+
+.preference-group h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.preference-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.preference-option:last-child {
+    margin-bottom: 0;
+}
+
+.preference-option input {
+    width: auto;
+    margin: 0;
+}

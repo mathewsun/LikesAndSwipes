@@ -1,5 +1,5 @@
 ﻿let currentStep = 1;
-const totalSteps = 6;
+const totalSteps = 7;
 
 const steps = document.querySelectorAll(".form-step");
 const progressBars = document.querySelectorAll(".progress-bar");
@@ -45,6 +45,14 @@ document.querySelectorAll(".next-btn").forEach(btn => {
         }
 
         if (currentStep === 3) {
+            const hasPreference = document.querySelectorAll('.preference-option input:checked').length > 0;
+            if (!hasPreference) {
+                alert("Please select at least one preference.");
+                return;
+            }
+        }
+
+        if (currentStep === 4) {
             const age = parseInt(document.getElementById("ageInput").value);
             if (!age || age < 18) {
                 alert("You must be at least 18 years old.");
@@ -52,7 +60,7 @@ document.querySelectorAll(".next-btn").forEach(btn => {
             }
         }
 
-        if (currentStep === 4) {
+        if (currentStep === 5) {
             const uploaded = document.querySelectorAll(".photo-box img").length;
             if (uploaded < 2) {
                 alert("Please upload at least 2 photos.");

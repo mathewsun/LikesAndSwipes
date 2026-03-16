@@ -20,10 +20,11 @@
             <div class="progress-bar"></div>
             <div class="progress-bar"></div>
             <div class="progress-bar"></div>
+            <div class="progress-bar"></div>
         </div>
 
         <span class="step-text">
-            Step <span id="currentStep">1</span> of 6
+            Step <span id="currentStep">1</span> of 7
         </span>
 
         <!-- STEP 1 -->
@@ -54,8 +55,32 @@
 
         <!-- STEP 3 -->
         <div class="form-step" data-step="3">
-            <h2>How old are you?</h2>
-            <input type="number" asp-for="Input.Age" id="ageInput" placeholder="Enter your age" min="18">
+            <h2>Who do you prefer to meet:</h2>
+
+            <div class="preference-group">
+                <h3>Romantic:</h3>
+                <label class="preference-option">
+                    <input type="checkbox" asp-for="Input.RomanticMen">
+                    <span>Men</span>
+                </label>
+                <label class="preference-option">
+                    <input type="checkbox" asp-for="Input.RomanticWomen">
+                    <span>Women</span>
+                </label>
+            </div>
+
+            <div class="preference-group">
+                <h3>Friendship:</h3>
+                <label class="preference-option">
+                    <input type="checkbox" asp-for="Input.FriendshipMen">
+                    <span>Men</span>
+                </label>
+                <label class="preference-option">
+                    <input type="checkbox" asp-for="Input.FriendshipWomen">
+                    <span>Women</span>
+                </label>
+            </div>
+
             <div class="button-row">
                 <button type="button" class="btn-secondary back-btn">Back</button>
                 <button type="button" class="btn-primary next-btn">Continue</button>
@@ -64,6 +89,16 @@
 
         <!-- STEP 4 -->
         <div class="form-step" data-step="4">
+            <h2>How old are you?</h2>
+            <input type="number" asp-for="Input.Age" id="ageInput" placeholder="Enter your age" min="18">
+            <div class="button-row">
+                <button type="button" class="btn-secondary back-btn">Back</button>
+                <button type="button" class="btn-primary next-btn">Continue</button>
+            </div>
+        </div>
+
+        <!-- STEP 5 -->
+        <div class="form-step" data-step="5">
             <h2>Add your photos</h2>
             <p class="sub-text">Add at least 2 photos to continue</p>
 
@@ -97,8 +132,8 @@
             </div>
         </div>
 
-        <!-- STEP 5 -->
-        <div class="form-step" data-step="5">
+        <!-- STEP 6 -->
+        <div class="form-step" data-step="6">
             <h2>Select interests</h2>
             <div class="interests">
                 <button type="button" class="interest">Travel</button>
@@ -124,8 +159,8 @@
             </div>
         </div>
 
-        <!-- STEP 6 -->
-        <div class="form-step" data-step="6">
+        <!-- STEP 7 -->
+        <div class="form-step" data-step="7">
             <h2>Create account</h2>
             <input type="text" asp-for="Input.Email" id="email" placeholder="Email or phone" style="font-size: 20px;" />
             <input type="password" asp-for="Input.Password" id="password" placeholder="Password" style="font-size: 20px;" />
