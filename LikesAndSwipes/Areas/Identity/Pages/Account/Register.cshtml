@@ -39,11 +39,11 @@
             <h2>What's your gender?</h2>
             <div class="gender-options" id="sexOptions">
                 <label class="gender-option">
-                    <input type="radio" asp-for="Input.Sex" value="false">
+                    <input type="radio" asp-for="Input.Sex" value="true">
                     <span>Man</span>
                 </label>
                 <label class="gender-option">
-                    <input type="radio" asp-for="Input.Sex" value="true">
+                    <input type="radio" asp-for="Input.Sex" value="false">
                     <span>Woman</span>
                 </label>
             </div>
@@ -72,11 +72,11 @@
             <div class="preference-group">
                 <h3>Friendship:</h3>
                 <label class="preference-option">
-                    <input type="checkbox" asp-for="Input.FriendshipMen">
+                    <input type="checkbox" checked asp-for="Input.FriendshipMen">
                     <span>Men</span>
                 </label>
                 <label class="preference-option">
-                    <input type="checkbox" asp-for="Input.FriendshipWomen">
+                    <input type="checkbox" checked asp-for="Input.FriendshipWomen">
                     <span>Women</span>
                 </label>
             </div>

@@ -80,30 +80,26 @@ document.querySelectorAll(".back-btn").forEach(btn => {
     });
 });
 
-/* 1 step check name not empty */
-//const inputName = document.getElementById('nameInput');
-//const buttonNextName = currentElement.nextElementSibling;
-
-//const inputHandler = function (e) {
-//    if (inputName.length > 0) {
-//        buttonNextName.classList.add('MyClass');
-//    } else {
-//        buttonNextName.classList.remove('MyClass');
-//    }
-//}
-
-//inputName.addEventListener('input', inputHandler);
-//inputName.addEventListener('propertychange', inputHandler);
-
-
+/* 2 step gender */
 genderOptions.forEach(option => {
     option.addEventListener("click", () => {
         genderOptions.forEach(btn => btn.classList.remove("selected"));
         option.classList.add("selected");
-        sexInput.value = option.dataset.sex;
+
+        var selectedValue = $('input[name="Input.Sex"]:checked').val();
+
+        /* 3 step prefer to meet */
+
+        if (selectedValue == "true") {
+            document.getElementById("Input_RomanticWomen").checked = true;
+            document.getElementById("Input_RomanticMen").checked = false;
+        }
+        else {
+            document.getElementById("Input_RomanticMen").checked = true;
+            document.getElementById("Input_RomanticWomen").checked = false;
+        }
     });
 });
-
 
 /* Photo preview */
 const photoInputs = document.querySelectorAll(".photo-input");

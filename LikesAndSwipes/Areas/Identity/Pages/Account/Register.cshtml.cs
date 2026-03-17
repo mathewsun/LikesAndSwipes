@@ -166,6 +166,10 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                         Id = user.Id,
                         FirstName = Input.Name,
                         Sex = Input.Sex ?? false,
+                        RomanticMen = Input.RomanticMen,
+                        RomanticWomen = Input.RomanticWomen,
+                        FriendshipMen = Input.FriendshipMen,
+                        FriendshipWomen = Input.FriendshipWomen,
                         Age = Input.Age
                     };
 
