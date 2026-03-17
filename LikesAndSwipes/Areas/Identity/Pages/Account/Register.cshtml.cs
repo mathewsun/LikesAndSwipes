@@ -115,6 +115,26 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             public bool? Sex { get; set; }
 
             /// <summary>
+            ///     Romantic preference for men
+            /// </summary>
+            public bool RomanticMen { get; set; }
+
+            /// <summary>
+            ///     Romantic preference for women
+            /// </summary>
+            public bool RomanticWomen { get; set; }
+
+            /// <summary>
+            ///     Friendship preference for men
+            /// </summary>
+            public bool FriendshipMen { get; set; }
+
+            /// <summary>
+            ///     Friendship preference for women
+            /// </summary>
+            public bool FriendshipWomen { get; set; }
+
+            /// <summary>
             ///     User Age
             /// </summary>
             public int Age { get; set; }
@@ -146,6 +166,10 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                         Id = user.Id,
                         FirstName = Input.Name,
                         Sex = Input.Sex ?? false,
+                        RomanticMen = Input.RomanticMen,
+                        RomanticWomen = Input.RomanticWomen,
+                        FriendshipMen = Input.FriendshipMen,
+                        FriendshipWomen = Input.FriendshipWomen,
                         Age = Input.Age
                     };
 
