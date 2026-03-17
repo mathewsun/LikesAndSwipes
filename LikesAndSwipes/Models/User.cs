@@ -14,6 +14,26 @@ namespace LikesAndSwipes.Models
 
         public bool IsBisexual { get; set; }
 
+        /// <summary>
+        ///     Romantic preference for men
+        /// </summary>
+        public bool RomanticMen { get; set; }
+
+        /// <summary>
+        ///     Romantic preference for women
+        /// </summary>
+        public bool RomanticWomen { get; set; }
+
+        /// <summary>
+        ///     Friendship preference for men
+        /// </summary>
+        public bool FriendshipMen { get; set; }
+
+        /// <summary>
+        ///     Friendship preference for women
+        /// </summary>
+        public bool FriendshipWomen { get; set; }
+
         public int Age { get; set; }
 
         public DateTime BirthDay { get; set; }
