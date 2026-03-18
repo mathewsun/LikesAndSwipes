@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: likesandswipes-db
+    environment:
+      POSTGRES_DB: likesandswipes
+      POSTGRES_USER: likesandswipes
+      POSTGRES_PASSWORD: likesandswipes1
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U likesandswipes -d likesandswipes"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      dockerfile: LikesAndSwipes/Dockerfile
+    container_name: likesandswipes-web
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultConnection: Host=host.docker.internal;Port=5432;Database=likesandswipes;Username=likesandswipes;Password=likesandswipes1
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres-data:
