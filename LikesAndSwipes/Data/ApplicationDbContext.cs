@@ -21,25 +21,27 @@ namespace LikesAndSwipes.Data
 
             base.OnModelCreating(modelBuilder);
 
+            var createdDefaultValueSql = Database.IsNpgsql() ? "now()" : "CURRENT_TIMESTAMP";
+
             modelBuilder
                .Entity<User>()
                .Property(e => e.Created)
-               .HasDefaultValueSql("now()");
+               .HasDefaultValueSql(createdDefaultValueSql);
 
             modelBuilder
                .Entity<LocationEntity>()
                .Property(e => e.Created)
-               .HasDefaultValueSql("now()");
+               .HasDefaultValueSql(createdDefaultValueSql);
 
             modelBuilder
                .Entity<Interests>()
                .Property(e => e.Created)
-               .HasDefaultValueSql("now()");
+               .HasDefaultValueSql(createdDefaultValueSql);
 
             modelBuilder
                .Entity<UserInterests>()
                .Property(e => e.Created)
-               .HasDefaultValueSql("now()");
+               .HasDefaultValueSql(createdDefaultValueSql);
         }
     }
 }
