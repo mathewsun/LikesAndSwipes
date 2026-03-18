@@ -37,10 +37,17 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      minio:
+        condition: service_started
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
       ConnectionStrings__DefaultConnection: Host=host.docker.internal;Port=5432;Database=likesandswipes;Username=likesandswipes;Password=likesandswipes1
+      Minio__Endpoint: minio:9000
+      Minio__AccessKey: likesandswipes
+      Minio__SecretKey: likesandswipes1
+      Minio__BucketName: likesandswipes-files
+      Minio__UseSsl: false
     ports:
       - "80:8080"
 
