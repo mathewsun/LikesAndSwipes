@@ -14,29 +14,42 @@ namespace LikesAndSwipes.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasPostgresExtension("postgis");
+            if (Database.IsNpgsql())
+            {
+                modelBuilder.HasPostgresExtension("postgis");
+            }
 
             base.OnModelCreating(modelBuilder);
+
+            var isNpgsql = Database.IsNpgsql();
+            var createdDefaultValueSql = isNpgsql ? "now()" : "CURRENT_TIMESTAMP";
+
+            if (!isNpgsql)
+            {
+                modelBuilder
+                    .Entity<LocationEntity>()
+                    .Ignore(e => e.Location);
+            }
 
             modelBuilder
                .Entity<User>()
                .Property(e => e.Created)
-               .HasDefaultValueSql("now()");
+               .HasDefaultValueSql(createdDefaultValueSql);
 
             modelBuilder
                .Entity<LocationEntity>()
                .Property(e => e.Created)
-               .HasDefaultValueSql("now()");
+               .HasDefaultValueSql(createdDefaultValueSql);
 
             modelBuilder
                .Entity<Interests>()
                .Property(e => e.Created)
-               .HasDefaultValueSql("now()");
+               .HasDefaultValueSql(createdDefaultValueSql);
 
             modelBuilder
                .Entity<UserInterests>()
                .Property(e => e.Created)
-               .HasDefaultValueSql("now()");
+               .HasDefaultValueSql(createdDefaultValueSql);
         }
     }
 }
