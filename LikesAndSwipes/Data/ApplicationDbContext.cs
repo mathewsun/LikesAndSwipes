@@ -14,7 +14,10 @@ namespace LikesAndSwipes.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasPostgresExtension("postgis");
+            if (Database.IsNpgsql())
+            {
+                modelBuilder.HasPostgresExtension("postgis");
+            }
 
             base.OnModelCreating(modelBuilder);
 
