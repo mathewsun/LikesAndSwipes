@@ -25,3 +25,15 @@ docker compose up --build
 The web app will be available at `http://localhost:8080` and will connect to the `db` service using the `ConnectionStrings__DefaultConnection` environment variable defined in `docker-compose.yml`.
 
 Docker Compose also starts a MinIO instance with an S3-compatible API on `http://localhost:9000` and the MinIO console on `http://localhost:9001`.
+
+
+## MinIO API
+
+The project now includes an API for working with MinIO objects:
+
+- `POST /api/minio/upload` — upload a file using multipart form-data (`file`, optional `objectName`).
+- `GET /api/minio/download/{objectName}` — download a file by object name.
+- `GET /api/minio/presigned-url/{objectName}` — get a temporary download URL.
+- `DELETE /api/minio/{objectName}` — delete an object from the bucket.
+
+Configuration is read from the `Minio` section in `appsettings.json` or from environment variables such as `Minio__Endpoint` and `Minio__BucketName`.

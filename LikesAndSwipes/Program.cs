@@ -1,6 +1,9 @@
 using LikesAndSwipes.Data;
 using LikesAndSwipes.Models;
 using LikesAndSwipes.Repositories;
+using LikesAndSwipes.Options;
+using LikesAndSwipes.Services;
+using Minio;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -43,6 +46,32 @@ namespace LikesAndSwipes
             });
 
             builder.Services.AddControllersWithViews();
+            builder.Services.Configure<MinioOptions>(builder.Configuration.GetSection(MinioOptions.SectionName));
+            builder.Services.AddSingleton<IMinioClient>(_ =>
+            {
+                var minioOptions = builder.Configuration.GetSection(MinioOptions.SectionName).Get<MinioOptions>()
+                    ?? throw new InvalidOperationException("Minio configuration is missing.");
+
+                if (string.IsNullOrWhiteSpace(minioOptions.Endpoint) ||
+                    string.IsNullOrWhiteSpace(minioOptions.AccessKey) ||
+                    string.IsNullOrWhiteSpace(minioOptions.SecretKey) ||
+                    string.IsNullOrWhiteSpace(minioOptions.BucketName))
+                {
+                    throw new InvalidOperationException("Minio configuration is incomplete.");
+                }
+
+                var clientBuilder = new MinioClient()
+                    .WithEndpoint(minioOptions.Endpoint)
+                    .WithCredentials(minioOptions.AccessKey, minioOptions.SecretKey);
+
+                if (minioOptions.UseSsl)
+                {
+                    clientBuilder = clientBuilder.WithSSL();
+                }
+
+                return clientBuilder.Build();
+            });
+            builder.Services.AddScoped<IMinioStorageService, MinioStorageService>();
 
             builder.Services.Configure<IdentityOptions>(options =>
             {
