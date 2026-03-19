@@ -37,5 +37,7 @@ namespace LikesAndSwipes.Models
         public int Age { get; set; }
 
         public DateTime BirthDay { get; set; }
+
+        public ICollection<UserPhoto> Photos { get; set; } = new List<UserPhoto>();
     }
 }

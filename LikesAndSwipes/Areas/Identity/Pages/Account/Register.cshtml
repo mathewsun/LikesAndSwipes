@@ -9,7 +9,8 @@
     <h1>Likes And Swipes</h1>
     <p>Let's create your profile</p>
 </div>
-<form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+<form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="card">
 
         <!-- Progress -->
@@ -104,23 +105,23 @@
 
             <div class="photo-grid">
                 <label class="photo-box">
-                    <input type="file" accept="image/*" class="photo-input">
+                    <input type="file" accept="image/*" class="photo-input" asp-for="Photos[0]">
                     <span>+</span>
                 </label>
                 <label class="photo-box">
-                    <input type="file" accept="image/*" class="photo-input">
+                    <input type="file" accept="image/*" class="photo-input" asp-for="Photos[1]">
                 </label>
                 <label class="photo-box">
-                    <input type="file" accept="image/*" class="photo-input">
+                    <input type="file" accept="image/*" class="photo-input" asp-for="Photos[2]">
                 </label>
                 <label class="photo-box">
-                    <input type="file" accept="image/*" class="photo-input">
+                    <input type="file" accept="image/*" class="photo-input" asp-for="Photos[3]">
                 </label>
                 <label class="photo-box">
-                    <input type="file" accept="image/*" class="photo-input">
+                    <input type="file" accept="image/*" class="photo-input" asp-for="Photos[4]">
                 </label>
                 <label class="photo-box">
-                    <input type="file" accept="image/*" class="photo-input">
+                    <input type="file" accept="image/*" class="photo-input" asp-for="Photos[5]">
                 </label>
             </div>
 

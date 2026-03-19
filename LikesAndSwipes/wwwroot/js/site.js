@@ -108,16 +108,34 @@ const photoCount = document.getElementById("photoCount");
 photoInputs.forEach(input => {
     input.addEventListener("change", function () {
         const file = this.files[0];
-        if (!file) return;
+        const parent = this.parentElement;
+        const existingImage = parent.querySelector("img");
+        const placeholder = parent.querySelector("span");
+
+        if (!file) {
+            existingImage?.remove();
+            if (placeholder) {
+                placeholder.style.display = "";
+            }
+
+            updatePhotoCount();
+            return;
+        }
 
         const reader = new FileReader();
         reader.onload = e => {
-            const img = document.createElement("img");
-            img.src = e.target.result;
+            if (!existingImage) {
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                parent.appendChild(img);
+            }
+            else {
+                existingImage.src = e.target.result;
+            }
 
-            const parent = this.parentElement;
-            parent.innerHTML = "";
-            parent.appendChild(img);
+            if (placeholder) {
+                placeholder.style.display = "none";
+            }
 
             updatePhotoCount();
         };
