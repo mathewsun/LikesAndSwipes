@@ -7,6 +7,7 @@ using Minio;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
 using System.Text;
 
 namespace LikesAndSwipes
@@ -52,7 +53,9 @@ namespace LikesAndSwipes
                 var minioOptions = builder.Configuration.GetSection(MinioOptions.SectionName).Get<MinioOptions>()
                     ?? throw new InvalidOperationException("Minio configuration is missing.");
 
-                if (string.IsNullOrWhiteSpace(minioOptions.Endpoint) ||
+                var minioEndpoint = ResolveMinioEndpoint(minioOptions);
+
+                if (string.IsNullOrWhiteSpace(minioEndpoint) ||
                     string.IsNullOrWhiteSpace(minioOptions.AccessKey) ||
                     string.IsNullOrWhiteSpace(minioOptions.SecretKey) ||
                     string.IsNullOrWhiteSpace(minioOptions.BucketName))
@@ -61,7 +64,7 @@ namespace LikesAndSwipes
                 }
 
                 var clientBuilder = new MinioClient()
-                    .WithEndpoint(minioOptions.Endpoint)
+                    .WithEndpoint(minioEndpoint)
                     .WithCredentials(minioOptions.AccessKey, minioOptions.SecretKey);
 
                 if (minioOptions.UseSsl)
@@ -116,5 +119,49 @@ namespace LikesAndSwipes
 
             app.Run();
         }
+
+        private static string ResolveMinioEndpoint(MinioOptions minioOptions)
+        {
+            if (string.IsNullOrWhiteSpace(minioOptions.Endpoint))
+            {
+                return minioOptions.Endpoint;
+            }
+
+            if (!IsRunningInContainer() || !IsLoopbackEndpoint(minioOptions.Endpoint))
+            {
+                return minioOptions.Endpoint;
+            }
+
+            if (!string.IsNullOrWhiteSpace(minioOptions.InternalEndpoint))
+            {
+                return minioOptions.InternalEndpoint;
+            }
+
+            return "minio:9000";
+        }
+
+        private static bool IsRunningInContainer()
+        {
+            return string.Equals(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"), "true", StringComparison.OrdinalIgnoreCase)
+                || File.Exists("/.dockerenv");
+        }
+
+        private static bool IsLoopbackEndpoint(string endpoint)
+        {
+            var normalizedEndpoint = endpoint.Contains("://", StringComparison.Ordinal)
+                ? endpoint
+                : $"http://{endpoint}";
+
+            if (!Uri.TryCreate(normalizedEndpoint, UriKind.Absolute, out var uri))
+            {
+                return false;
+            }
+
+            return uri.IsLoopback
+                || string.Equals(uri.Host, "localhost", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(uri.Host, "127.0.0.1", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(uri.Host, IPAddress.Loopback.ToString(), StringComparison.OrdinalIgnoreCase);
+        }
+
     }
 }
