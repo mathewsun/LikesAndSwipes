@@ -202,17 +202,17 @@ public class MinioStorageService : IMinioStorageService
 
     private IEnumerable<IMinioClient> GetClientCandidates()
     {
-        yield return _minioClient;
-
-        foreach (var endpoint in GetFallbackEndpoints())
+        foreach (var endpoint in GetConfiguredEndpoints())
         {
             yield return CreateClient(endpoint);
         }
+
+        yield return _minioClient;
     }
 
-    private IEnumerable<string> GetFallbackEndpoints()
+    private IEnumerable<string> GetConfiguredEndpoints()
     {
-        var endpoints = new[] { _options.Endpoint, _options.InternalEndpoint }
+        var endpoints = new[] { _options.InternalEndpoint, _options.Endpoint }
             .Where(endpoint => !string.IsNullOrWhiteSpace(endpoint))
             .Distinct(StringComparer.OrdinalIgnoreCase);
 
