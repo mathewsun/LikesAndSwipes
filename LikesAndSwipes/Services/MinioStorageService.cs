@@ -18,6 +18,8 @@ public class MinioStorageService : IMinioStorageService
         _minioClient = minioClient;
         _options = options.Value;
         _logger = logger;
+
+        ValidateOptions();
     }
 
     public async Task<MinioObjectUploadResult> UploadAsync(IFormFile file, string? objectName, CancellationToken cancellationToken = default)
@@ -39,19 +41,19 @@ public class MinioStorageService : IMinioStorageService
 
             await using var stream = file.OpenReadStream();
             var putObjectArgs = new PutObjectArgs()
-                .WithBucket(_options.BucketName)
+                .WithBucket(GetRequiredBucketName())
                 .WithObject(resolvedObjectName)
                 .WithStreamData(stream)
                 .WithObjectSize(file.Length)
                 .WithContentType(string.IsNullOrWhiteSpace(file.ContentType) ? "application/octet-stream" : file.ContentType);
 
             await client.PutObjectAsync(putObjectArgs, cancellationToken);
-            _logger.LogInformation("Uploaded object {ObjectName} to bucket {BucketName}", resolvedObjectName, _options.BucketName);
+            _logger.LogInformation("Uploaded object {ObjectName} to bucket {BucketName}", resolvedObjectName, GetRequiredBucketName());
 
             return new MinioObjectUploadResult
             {
                 ObjectName = resolvedObjectName,
-                BucketName = _options.BucketName,
+                BucketName = GetRequiredBucketName(),
                 ContentType = string.IsNullOrWhiteSpace(file.ContentType) ? "application/octet-stream" : file.ContentType,
                 Size = file.Length
             };
@@ -69,7 +71,7 @@ public class MinioStorageService : IMinioStorageService
 
             var stream = new MemoryStream();
             var getObjectArgs = new GetObjectArgs()
-                .WithBucket(_options.BucketName)
+                .WithBucket(GetRequiredBucketName())
                 .WithObject(objectName)
                 .WithCallbackStream(source => source.CopyTo(stream));
 
@@ -89,11 +91,11 @@ public class MinioStorageService : IMinioStorageService
             }
 
             var removeObjectArgs = new RemoveObjectArgs()
-                .WithBucket(_options.BucketName)
+                .WithBucket(GetRequiredBucketName())
                 .WithObject(objectName);
 
             await client.RemoveObjectAsync(removeObjectArgs, cancellationToken);
-            _logger.LogInformation("Deleted object {ObjectName} from bucket {BucketName}", objectName, _options.BucketName);
+            _logger.LogInformation("Deleted object {ObjectName} from bucket {BucketName}", objectName, GetRequiredBucketName());
             return true;
         }, cancellationToken);
     }
@@ -104,11 +106,11 @@ public class MinioStorageService : IMinioStorageService
         {
             if (!await ObjectExistsAsync(client, objectName, cancellationToken))
             {
-                throw new FileNotFoundException($"Object '{objectName}' was not found in bucket '{_options.BucketName}'.");
+                throw new FileNotFoundException($"Object '{objectName}' was not found in bucket '{GetRequiredBucketName()}'.");
             }
 
             var presignedGetObjectArgs = new PresignedGetObjectArgs()
-                .WithBucket(_options.BucketName)
+                .WithBucket(GetRequiredBucketName())
                 .WithObject(objectName)
                 .WithExpiry(_options.PresignedUrlExpirySeconds);
 
@@ -118,16 +120,16 @@ public class MinioStorageService : IMinioStorageService
 
     private async Task EnsureBucketExistsAsync(IMinioClient client, CancellationToken cancellationToken)
     {
-        var bucketExistsArgs = new BucketExistsArgs().WithBucket(_options.BucketName);
+        var bucketExistsArgs = new BucketExistsArgs().WithBucket(GetRequiredBucketName());
         var exists = await client.BucketExistsAsync(bucketExistsArgs, cancellationToken);
         if (exists)
         {
             return;
         }
 
-        var makeBucketArgs = new MakeBucketArgs().WithBucket(_options.BucketName);
+        var makeBucketArgs = new MakeBucketArgs().WithBucket(GetRequiredBucketName());
         await client.MakeBucketAsync(makeBucketArgs, cancellationToken);
-        _logger.LogInformation("Created MinIO bucket {BucketName}", _options.BucketName);
+        _logger.LogInformation("Created MinIO bucket {BucketName}", GetRequiredBucketName());
     }
 
     private async Task<bool> ObjectExistsAsync(IMinioClient client, string objectName, CancellationToken cancellationToken)
@@ -135,7 +137,7 @@ public class MinioStorageService : IMinioStorageService
         try
         {
             var statObjectArgs = new StatObjectArgs()
-                .WithBucket(_options.BucketName)
+                .WithBucket(GetRequiredBucketName())
                 .WithObject(objectName);
 
             await client.StatObjectAsync(statObjectArgs, cancellationToken);
@@ -145,6 +147,37 @@ public class MinioStorageService : IMinioStorageService
         {
             return false;
         }
+    }
+
+
+    private void ValidateOptions()
+    {
+        _ = GetRequiredBucketName();
+
+        if (string.IsNullOrWhiteSpace(_options.Endpoint) && string.IsNullOrWhiteSpace(_options.InternalEndpoint))
+        {
+            throw new InvalidOperationException("At least one MinIO endpoint must be configured.");
+        }
+
+        if (string.IsNullOrWhiteSpace(_options.AccessKey))
+        {
+            throw new InvalidOperationException("MinIO access key is missing.");
+        }
+
+        if (string.IsNullOrWhiteSpace(_options.SecretKey))
+        {
+            throw new InvalidOperationException("MinIO secret key is missing.");
+        }
+    }
+
+    private string GetRequiredBucketName()
+    {
+        if (string.IsNullOrWhiteSpace(_options.BucketName))
+        {
+            throw new InvalidOperationException("MinIO bucket name is missing.");
+        }
+
+        return _options.BucketName;
     }
 
     private async Task<T> ExecuteWithFailoverAsync<T>(Func<IMinioClient, Task<T>> operation, CancellationToken cancellationToken)
