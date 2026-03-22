@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 
 namespace LikesAndSwipes
@@ -122,31 +123,15 @@ namespace LikesAndSwipes
 
         private static string ResolveMinioEndpoint(MinioOptions minioOptions)
         {
-            if (string.IsNullOrWhiteSpace(minioOptions.Endpoint))
-            {
-                return minioOptions.Endpoint;
-            }
-
-            if (!IsRunningInContainer() || !IsLoopbackEndpoint(minioOptions.Endpoint))
-            {
-                return minioOptions.Endpoint;
-            }
-
-            if (!string.IsNullOrWhiteSpace(minioOptions.InternalEndpoint))
+            if (!string.IsNullOrWhiteSpace(minioOptions.InternalEndpoint) && CanResolveEndpointHost(minioOptions.InternalEndpoint))
             {
                 return minioOptions.InternalEndpoint;
             }
 
-            return "minio:9000";
+            return minioOptions.Endpoint;
         }
 
-        private static bool IsRunningInContainer()
-        {
-            return string.Equals(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"), "true", StringComparison.OrdinalIgnoreCase)
-                || File.Exists("/.dockerenv");
-        }
-
-        private static bool IsLoopbackEndpoint(string endpoint)
+        private static bool CanResolveEndpointHost(string endpoint)
         {
             var normalizedEndpoint = endpoint.Contains("://", StringComparison.Ordinal)
                 ? endpoint
@@ -157,10 +142,14 @@ namespace LikesAndSwipes
                 return false;
             }
 
-            return uri.IsLoopback
-                || string.Equals(uri.Host, "localhost", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(uri.Host, "127.0.0.1", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(uri.Host, IPAddress.Loopback.ToString(), StringComparison.OrdinalIgnoreCase);
+            try
+            {
+                return Dns.GetHostAddresses(uri.Host).Length > 0;
+            }
+            catch (SocketException)
+            {
+                return false;
+            }
         }
 
     }
