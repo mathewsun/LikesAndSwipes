@@ -212,7 +212,7 @@ public class MinioStorageService : IMinioStorageService
 
     private IEnumerable<string> GetConfiguredEndpoints()
     {
-        var endpoints = new[] { _options.InternalEndpoint, _options.Endpoint }
+        var endpoints = new[] { _options.InternalEndpoint, "minio:9000", _options.Endpoint, "localhost:9000" }
             .Where(endpoint => !string.IsNullOrWhiteSpace(endpoint))
             .Distinct(StringComparer.OrdinalIgnoreCase);
 
