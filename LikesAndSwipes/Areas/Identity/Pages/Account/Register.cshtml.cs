@@ -191,8 +191,8 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                     catch (Exception ex)
                     {
                         _logger.LogError(ex, "Failed to upload registration photos for user {UserId}", user.Id);
-                        await _userManager.DeleteAsync(user);
-                        ModelState.AddModelError(string.Empty, "Не удалось сохранить фотографии. Попробуйте зарегистрироваться снова.");
+                        //await _userManager.DeleteAsync(user);
+                        ModelState.AddModelError(string.Empty, "Не удалось сохранить фотографии.");
                         return Page();
                     }
 
