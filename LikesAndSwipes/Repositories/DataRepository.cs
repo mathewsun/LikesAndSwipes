@@ -28,6 +28,78 @@ namespace LikesAndSwipes.Repositories
             return result;
         }
 
+        public async Task SaveUserInterests(string userId, IEnumerable<string> selectedInterestNames)
+        {
+            selectedInterestNames ??= Enumerable.Empty<string>();
+
+            var interestNames = selectedInterestNames
+                .Where(name => !string.IsNullOrWhiteSpace(name))
+                .Select(name => name.Trim())
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .Take(5)
+                .ToList();
+
+            if (interestNames.Count == 0)
+            {
+                return;
+            }
+
+            var currentUser = await _context.Users.OfType<User>().FirstOrDefaultAsync(x => x.Id == userId);
+
+            if (currentUser is null)
+            {
+                throw new InvalidOperationException($"User with id '{userId}' was not found.");
+            }
+
+            var existingInterests = await _context.Interests
+                .Where(interest => interestNames.Contains(interest.Name))
+                .ToListAsync();
+
+            var existingInterestNames = existingInterests
+                .Select(interest => interest.Name)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            var newInterests = interestNames
+                .Where(name => !existingInterestNames.Contains(name))
+                .Select(name => new Interests { Name = name })
+                .ToList();
+
+            if (newInterests.Count > 0)
+            {
+                await _context.Interests.AddRangeAsync(newInterests);
+                await _context.SaveChangesAsync();
+                existingInterests.AddRange(newInterests);
+            }
+
+            var selectedInterestIds = existingInterests
+                .Where(interest => interestNames.Contains(interest.Name, StringComparer.OrdinalIgnoreCase))
+                .Select(interest => interest.Id)
+                .Distinct()
+                .ToList();
+
+            var existingUserInterestIds = await _context.UserInterests
+                .Where(userInterest => userInterest.UserId == userId && selectedInterestIds.Contains(userInterest.InterestId))
+                .Select(userInterest => userInterest.InterestId)
+                .ToListAsync();
+
+            var userInterests = selectedInterestIds
+                .Except(existingUserInterestIds)
+                .Select(interestId => new UserInterests
+                {
+                    UserId = userId,
+                    InterestId = interestId
+                })
+                .ToList();
+
+            if (userInterests.Count == 0)
+            {
+                return;
+            }
+
+            await _context.UserInterests.AddRangeAsync(userInterests);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task SaveUserFirstName(User user)
         {
             var currentUser = await _context.Users.OfType<User>().FirstOrDefaultAsync(x => x.Id == user.Id);
