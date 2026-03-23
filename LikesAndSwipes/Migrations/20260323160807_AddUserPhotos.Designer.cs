@@ -13,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LikesAndSwipes.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260317221012_AddPreferToMeetFields")]
-    partial class AddPreferToMeetFields
+    [Migration("20260323160807_AddUserPhotos")]
+    partial class AddUserPhotos
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -91,6 +91,43 @@ namespace LikesAndSwipes.Migrations
                     b.HasKey("UserId", "InterestId");
 
                     b.ToTable("UserInterests");
+                });
+
+            modelBuilder.Entity("LikesAndSwipes.Models.UserPhoto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<DateTime>("Created")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("now()");
+
+                    b.Property<string>("ObjectName")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserPhotos");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -345,6 +382,17 @@ namespace LikesAndSwipes.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
+            modelBuilder.Entity("LikesAndSwipes.Models.UserPhoto", b =>
+                {
+                    b.HasOne("LikesAndSwipes.Models.User", "User")
+                        .WithMany("Photos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -394,6 +442,11 @@ namespace LikesAndSwipes.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("LikesAndSwipes.Models.User", b =>
+                {
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

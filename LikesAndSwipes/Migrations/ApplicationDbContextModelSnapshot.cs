@@ -390,11 +390,6 @@ namespace LikesAndSwipes.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("LikesAndSwipes.Models.User", b =>
-                {
-                    b.Navigation("Photos");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -444,6 +439,11 @@ namespace LikesAndSwipes.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("LikesAndSwipes.Models.User", b =>
+                {
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }
