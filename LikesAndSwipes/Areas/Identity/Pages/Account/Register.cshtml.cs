@@ -154,7 +154,6 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             public List<string> SelectedInterests { get; set; } = new();
         }
 
-
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
