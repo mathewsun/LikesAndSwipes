@@ -6,6 +6,24 @@ const progressBars = document.querySelectorAll(".progress-bar");
 const currentStepText = document.getElementById("currentStep");
 const sexInput = document.getElementById("sexInput");
 const genderOptions = document.querySelectorAll(".gender-option");
+const romanticPreferenceGroup = document.getElementById("romanticPreferenceGroup");
+const romanticMenOption = document.getElementById("romanticMenOption");
+const romanticWomenOption = document.getElementById("romanticWomenOption");
+
+function updateRomanticPreferenceOrder(selectedValue) {
+    if (!romanticPreferenceGroup || !romanticMenOption || !romanticWomenOption) {
+        return;
+    }
+
+    if (selectedValue == "true") {
+        romanticPreferenceGroup.appendChild(romanticWomenOption);
+        romanticPreferenceGroup.appendChild(romanticMenOption);
+        return;
+    }
+
+    romanticPreferenceGroup.appendChild(romanticMenOption);
+    romanticPreferenceGroup.appendChild(romanticWomenOption);
+}
 
 function updateUI() {
     steps.forEach(step => {
@@ -98,6 +116,8 @@ genderOptions.forEach(option => {
             document.getElementById("Input_RomanticMen").checked = true;
             document.getElementById("Input_RomanticWomen").checked = false;
         }
+
+        updateRomanticPreferenceOrder(selectedValue);
     });
 });
 
@@ -149,6 +169,7 @@ function updatePhotoCount() {
 }
 
 updateUI();
+updateRomanticPreferenceOrder($('input[name="Input.Sex"]:checked').val());
 
 /* Interests logic */
 const interests = document.querySelectorAll(".interest");
