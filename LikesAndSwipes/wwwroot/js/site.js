@@ -153,6 +153,7 @@ updateUI();
 /* Interests logic */
 const interests = document.querySelectorAll(".interest");
 const interestCount = document.getElementById("interestCount");
+const selectedInterestsContainer = document.getElementById("selectedInterestsContainer");
 
 interests.forEach(btn => {
     btn.addEventListener("click", () => {
@@ -165,9 +166,26 @@ interests.forEach(btn => {
             return;
         }
 
+        syncSelectedInterests();
         interestCount.textContent = `${selected.length}/5 selected`;
     });
 });
+
+function syncSelectedInterests() {
+    if (!selectedInterestsContainer) {
+        return;
+    }
+
+    selectedInterestsContainer.innerHTML = "";
+
+    document.querySelectorAll(".interest.selected").forEach((button, index) => {
+        const hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = `Input.SelectedInterests[${index}]`;
+        hiddenInput.value = button.dataset.interest || button.textContent.trim();
+        selectedInterestsContainer.appendChild(hiddenInput);
+    });
+}
 
 /* Registration validation */
 document.getElementById("registerBtn").addEventListener("click", () => {

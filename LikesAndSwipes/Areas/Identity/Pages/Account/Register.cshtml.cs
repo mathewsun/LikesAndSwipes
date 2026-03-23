@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -146,6 +147,11 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             ///     User Age
             /// </summary>
             public int Age { get; set; }
+
+            /// <summary>
+            ///     Selected interests during registration
+            /// </summary>
+            public List<string> SelectedInterests { get; set; } = new();
         }
 
 
@@ -182,6 +188,7 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                     };
 
                     await _dataRepository.SaveUserRegistrationData(newUser);
+                    await _dataRepository.SaveUserInterests(user.Id, Input.SelectedInterests);
 
                     try
                     {
