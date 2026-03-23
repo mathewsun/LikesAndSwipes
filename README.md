@@ -24,7 +24,7 @@ docker compose up --build
 
 The web app will be available at `http://localhost:8080` and will connect to the `db` service using the `ConnectionStrings__DefaultConnection` environment variable defined in `docker-compose.yml`.
 
-Docker Compose also starts a MinIO instance with an S3-compatible API on `http://localhost:9000` and the MinIO console on `http://localhost:9001`.
+Docker Compose also starts a MinIO instance with an S3-compatible API on `http://host.docker.internal:9000` and the MinIO console on `http://host.docker.internal:9001` (not http://localhost:9000).
 
 
 ## MinIO API
