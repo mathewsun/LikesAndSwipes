@@ -4,6 +4,8 @@ using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
 using Minio.Exceptions;
+using System.Net;
+using System.Net.Sockets;
 
 namespace LikesAndSwipes.Services;
 
@@ -214,11 +216,34 @@ public class MinioStorageService : IMinioStorageService
     {
         var endpoints = new[] { _options.InternalEndpoint, "minio:9000", _options.Endpoint, "localhost:9000" }
             .Where(endpoint => !string.IsNullOrWhiteSpace(endpoint))
+            .Where(CanResolveEndpointHost)
             .Distinct(StringComparer.OrdinalIgnoreCase);
 
         foreach (var endpoint in endpoints)
         {
             yield return endpoint;
+        }
+    }
+
+
+    private static bool CanResolveEndpointHost(string endpoint)
+    {
+        var normalizedEndpoint = endpoint.Contains("://", StringComparison.Ordinal)
+            ? endpoint
+            : $"http://{endpoint}";
+
+        if (!Uri.TryCreate(normalizedEndpoint, UriKind.Absolute, out var uri))
+        {
+            return false;
+        }
+
+        try
+        {
+            return Dns.GetHostAddresses(uri.Host).Length > 0;
+        }
+        catch (SocketException)
+        {
+            return false;
         }
     }
 
