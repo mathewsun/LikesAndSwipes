@@ -252,10 +252,10 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                 .Take(6)
                 .ToList();
 
-            if (validPhotos.Count < 2)
-            {
-                throw new InvalidOperationException("At least two photos are required for registration.");
-            }
+            //if (validPhotos.Count < 2)
+            //{
+            //    throw new InvalidOperationException("At least two photos are required for registration.");
+            //}
 
             var uploadedPhotos = new List<UserPhoto>();
             var uploadedObjectNames = new List<string>();
