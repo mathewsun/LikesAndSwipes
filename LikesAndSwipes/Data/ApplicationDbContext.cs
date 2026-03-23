@@ -12,6 +12,8 @@ namespace LikesAndSwipes.Data
 
         public DbSet<UserInterests> UserInterests => Set<UserInterests>();
 
+        public DbSet<UserPhoto> UserPhotos => Set<UserPhoto>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             if (Database.IsNpgsql())
@@ -40,6 +42,18 @@ namespace LikesAndSwipes.Data
                .Entity<UserInterests>()
                .Property(e => e.Created)
                .HasDefaultValueSql("now()");
+
+            modelBuilder
+               .Entity<UserPhoto>()
+               .Property(e => e.Created)
+               .HasDefaultValueSql("now()");
+
+            modelBuilder
+                .Entity<UserPhoto>()
+                .HasOne(photo => photo.User)
+                .WithMany(user => user.Photos)
+                .HasForeignKey(photo => photo.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

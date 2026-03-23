@@ -42,6 +42,26 @@ namespace LikesAndSwipes.Repositories
             await _context.SaveChangesAsync();
         }
 
+
+        public async Task SaveUserPhotos(string userId, IEnumerable<UserPhoto> photos)
+        {
+            var currentUser = await _context.Users.OfType<User>().FirstOrDefaultAsync(x => x.Id == userId);
+
+            if (currentUser is null)
+            {
+                throw new InvalidOperationException($"User with id '{userId}' was not found.");
+            }
+
+            var photoEntities = photos.ToList();
+            if (photoEntities.Count == 0)
+            {
+                return;
+            }
+
+            await _context.UserPhotos.AddRangeAsync(photoEntities);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task SaveUserRegistrationData(User user)
         {
             var currentUser = await _context.Users.OfType<User>().FirstOrDefaultAsync(x => x.Id == user.Id);

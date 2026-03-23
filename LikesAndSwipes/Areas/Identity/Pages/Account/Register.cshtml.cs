@@ -4,6 +4,7 @@
 
 using LikesAndSwipes.Models;
 using LikesAndSwipes.Repositories;
+using LikesAndSwipes.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -19,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace LikesAndSwipes.Areas.Identity.Pages.Account
@@ -31,6 +33,7 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IMinioStorageService _minioStorageService;
         private DataRepository _dataRepository;
 
         public RegisterModel(
@@ -39,6 +42,7 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
+            IMinioStorageService minioStorageService,
             DataRepository dataRepository)
         {
             _userManager = userManager;
@@ -47,6 +51,7 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _minioStorageService = minioStorageService;
             _dataRepository = dataRepository;
         }
 
@@ -62,6 +67,9 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public string ReturnUrl { get; set; }
+
+        [BindProperty]
+        public List<IFormFile> Photos { get; set; } = new();
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -175,6 +183,19 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
 
                     await _dataRepository.SaveUserRegistrationData(newUser);
 
+                    try
+                    {
+                        var uploadedPhotos = await UploadRegistrationPhotosAsync(user.Id);
+                        await _dataRepository.SaveUserPhotos(user.Id, uploadedPhotos);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Failed to upload registration photos for user {UserId}", user.Id);
+                        await _userManager.DeleteAsync(user);
+                        ModelState.AddModelError(string.Empty, "Не удалось сохранить фотографии. Попробуйте зарегистрироваться снова.");
+                        return Page();
+                    }
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);
@@ -220,6 +241,54 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                 throw new InvalidOperationException($"Can't create an instance of '{nameof(User)}'. " +
                     $"Ensure that '{nameof(User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+            }
+        }
+
+
+        private async Task<List<UserPhoto>> UploadRegistrationPhotosAsync(string userId)
+        {
+            var validPhotos = Photos
+                .Where(photo => photo is not null && photo.Length > 0)
+                .Take(6)
+                .ToList();
+
+            //if (validPhotos.Count < 2)
+            //{
+            //    throw new InvalidOperationException("At least two photos are required for registration.");
+            //}
+
+            var uploadedPhotos = new List<UserPhoto>();
+            var uploadedObjectNames = new List<string>();
+
+            try
+            {
+                for (var index = 0; index < validPhotos.Count; index++)
+                {
+                    var photo = validPhotos[index];
+                    var extension = Path.GetExtension(photo.FileName);
+                    var objectName = $"users/{userId}/registration/{index + 1}-{Guid.NewGuid():N}{extension}";
+                    var uploadResult = await _minioStorageService.UploadAsync(photo, objectName);
+
+                    uploadedObjectNames.Add(uploadResult.ObjectName);
+                    uploadedPhotos.Add(new UserPhoto
+                    {
+                        UserId = userId,
+                        ObjectName = uploadResult.ObjectName,
+                        ContentType = photo.ContentType ?? string.Empty,
+                        SortOrder = index
+                    });
+                }
+
+                return uploadedPhotos;
+            }
+            catch
+            {
+                foreach (var objectName in uploadedObjectNames)
+                {
+                    await _minioStorageService.DeleteAsync(objectName);
+                }
+
+                throw;
             }
         }
 
