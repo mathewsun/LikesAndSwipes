@@ -36,7 +36,6 @@ namespace LikesAndSwipes.Repositories
                 .Where(name => !string.IsNullOrWhiteSpace(name))
                 .Select(name => name.Trim())
                 .Distinct(StringComparer.OrdinalIgnoreCase)
-                .Take(5)
                 .ToList();
 
             if (interestNames.Count == 0)
