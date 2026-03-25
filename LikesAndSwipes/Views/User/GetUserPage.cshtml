@@ -19,7 +19,7 @@
             @foreach (var photo in Model.Photos)
             {
                 <div class="user-photo-grid-item">
-                    <img src="@Url.Action("Download", "Minio", new { objectName = photo.ObjectName })" alt="User photo" loading="lazy" />
+                    <img src="/api/Minio/download/@photo.ObjectName" alt="User photo" loading="lazy" />
                 </div>
             }
         </div>
