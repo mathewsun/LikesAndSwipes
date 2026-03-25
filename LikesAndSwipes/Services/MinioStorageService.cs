@@ -54,9 +54,18 @@ public class MinioStorageService : IMinioStorageService
         };
     }
 
-    public async Task<Stream?> GetAsync(string objectName, CancellationToken cancellationToken = default)
+    public async Task<MinioObjectDownloadResult?> GetAsync(string objectName, CancellationToken cancellationToken = default)
     {
-        if (!await ObjectExistsAsync(objectName, cancellationToken))
+        var statObjectArgs = new StatObjectArgs()
+            .WithBucket(_options.BucketName)
+            .WithObject(objectName);
+
+        Minio.DataModel.ObjectStat objectStat;
+        try
+        {
+            objectStat = await _minioClient.StatObjectAsync(statObjectArgs, cancellationToken);
+        }
+        catch (Minio.Exceptions.ObjectNotFoundException)
         {
             return null;
         }
@@ -69,7 +78,14 @@ public class MinioStorageService : IMinioStorageService
 
         await _minioClient.GetObjectAsync(getObjectArgs, cancellationToken);
         stream.Position = 0;
-        return stream;
+
+        return new MinioObjectDownloadResult
+        {
+            Stream = stream,
+            ContentType = string.IsNullOrWhiteSpace(objectStat.ContentType)
+                ? "application/octet-stream"
+                : objectStat.ContentType
+        };
     }
 
     public async Task<bool> DeleteAsync(string objectName, CancellationToken cancellationToken = default)

@@ -37,13 +37,13 @@ public class MinioController : ControllerBase
     [HttpGet("download/{*objectName}")]
     public async Task<IActionResult> Download(string objectName, CancellationToken cancellationToken)
     {
-        var stream = await _minioStorageService.GetAsync(objectName, cancellationToken);
-        if (stream is null)
+        var result = await _minioStorageService.GetAsync(objectName, cancellationToken);
+        if (result is null)
         {
             return NotFound();
         }
 
-        return File(stream, "application/octet-stream", objectName);
+        return File(result.Stream, result.ContentType);
     }
 
     [HttpGet("presigned-url/{*objectName}")]
