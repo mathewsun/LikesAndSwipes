@@ -19,7 +19,7 @@ namespace LikesAndSwipes.Controllers
         }
 
         [HttpGet("user")]
-        public async Task<IActionResult> User(string? id)
+        public async Task<IActionResult> GetUserPage(string? id)
         {
             var userId = string.IsNullOrWhiteSpace(id)
                 ? _userManager.GetUserId(User)
@@ -42,7 +42,7 @@ namespace LikesAndSwipes.Controllers
         }
 
         [HttpGet("user/{id}")]
-        public async Task<IActionResult> Index(string id)
+        public async Task<IActionResult> GetUserPageWithId(string id)
         {
             var photos = await _dataRepository.GetUserPhotos(id);
 
