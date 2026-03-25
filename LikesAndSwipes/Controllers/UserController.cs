@@ -8,28 +8,51 @@ namespace LikesAndSwipes.Controllers
     public class UserController : Controller
     {
         private readonly UserManager<User> _userManager;
-        private DataRepository _dataRepository;
+        private readonly DataRepository _dataRepository;
 
         public UserController(
             UserManager<User> userManager,
             DataRepository dataRepository)
         {
-
+            _userManager = userManager;
             _dataRepository = dataRepository;
         }
 
         [HttpGet("user")]
-        public IActionResult User(string id)
+        public async Task<IActionResult> GetUserPage(string? id)
         {
-            return View();
+            var userId = string.IsNullOrWhiteSpace(id)
+                ? _userManager.GetUserId(User)
+                : id;
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Challenge();
+            }
+
+            var photos = await _dataRepository.GetUserPhotos(userId);
+
+            var viewModel = new UserProfilePhotosViewModel
+            {
+                UserId = userId,
+                Photos = photos
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet("user/{id}")]
-        public IActionResult Index(string id)
+        public async Task<IActionResult> GetUserPageWithId(string id)
         {
+            var photos = await _dataRepository.GetUserPhotos(id);
 
+            var viewModel = new UserProfilePhotosViewModel
+            {
+                UserId = id,
+                Photos = photos
+            };
 
-            return View();
+            return View("User", viewModel);
         }
     }
 }

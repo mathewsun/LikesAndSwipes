@@ -1,0 +1,27 @@
+@model LikesAndSwipes.Models.UserProfilePhotosViewModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<section class="user-profile-page">
+    <div class="user-profile-header">
+        <h1>Мои фотографии</h1>
+        <a asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a>
+    </div>
+
+    @if (Model.Photos.Count == 0)
+    {
+        <p class="user-profile-empty">Фотографии пока не загружены.</p>
+    }
+    else
+    {
+        <div class="user-photo-grid">
+            @foreach (var photo in Model.Photos)
+            {
+                <div class="user-photo-grid-item">
+                    <img src="@Url.Action("Download", "Minio", new { objectName = photo.ObjectName })" alt="User photo" loading="lazy" />
+                </div>
+            }
+        </div>
+    }
+</section>

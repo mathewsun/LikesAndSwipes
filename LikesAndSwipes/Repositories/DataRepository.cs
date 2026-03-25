@@ -133,6 +133,15 @@ namespace LikesAndSwipes.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<UserPhoto>> GetUserPhotos(string userId)
+        {
+            return await _context.UserPhotos
+                .Where(photo => photo.UserId == userId)
+                .OrderBy(photo => photo.SortOrder)
+                .ThenBy(photo => photo.Created)
+                .ToListAsync();
+        }
+
         public async Task SaveUserRegistrationData(User user)
         {
             var currentUser = await _context.Users.OfType<User>().FirstOrDefaultAsync(x => x.Id == user.Id);
