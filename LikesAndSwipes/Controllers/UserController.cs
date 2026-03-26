@@ -1,6 +1,8 @@
 ﻿using LikesAndSwipes.Models;
 using LikesAndSwipes.Repositories;
+using LikesAndSwipes.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LikesAndSwipes.Controllers
@@ -9,13 +11,19 @@ namespace LikesAndSwipes.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly DataRepository _dataRepository;
+        private readonly IMinioStorageService _minioStorageService;
+        private readonly ILogger<UserController> _logger;
 
         public UserController(
             UserManager<User> userManager,
-            DataRepository dataRepository)
+            DataRepository dataRepository,
+            IMinioStorageService minioStorageService,
+            ILogger<UserController> logger)
         {
             _userManager = userManager;
             _dataRepository = dataRepository;
+            _minioStorageService = minioStorageService;
+            _logger = logger;
         }
 
         [HttpGet("user")]
@@ -35,7 +43,8 @@ namespace LikesAndSwipes.Controllers
             var viewModel = new UserProfilePhotosViewModel
             {
                 UserId = userId,
-                Photos = photos
+                Photos = photos,
+                IsCurrentUserProfile = string.Equals(_userManager.GetUserId(User), userId, StringComparison.Ordinal)
             };
 
             return View(viewModel);
@@ -49,10 +58,61 @@ namespace LikesAndSwipes.Controllers
             var viewModel = new UserProfilePhotosViewModel
             {
                 UserId = id,
-                Photos = photos
+                Photos = photos,
+                IsCurrentUserProfile = string.Equals(_userManager.GetUserId(User), id, StringComparison.Ordinal)
             };
 
             return View("User", viewModel);
+        }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost("user/photo")]
+        public async Task<IActionResult> AddPhoto(IFormFile? photo, CancellationToken cancellationToken)
+        {
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Challenge();
+            }
+
+            if (photo is null || photo.Length == 0)
+            {
+                TempData["PhotoUploadError"] = "Выберите фотографию перед загрузкой.";
+                return RedirectToAction(nameof(GetUserPage));
+            }
+
+            var extension = Path.GetExtension(photo.FileName);
+            var objectName = $"users/{userId}/profile/{DateTime.UtcNow:yyyyMMddHHmmss}-{Guid.NewGuid():N}{extension}";
+
+            try
+            {
+                var uploadResult = await _minioStorageService.UploadAsync(photo, objectName, cancellationToken);
+                var existingPhotos = await _dataRepository.GetUserPhotos(userId);
+                var nextSortOrder = existingPhotos.Count == 0
+                    ? 0
+                    : existingPhotos.Max(x => x.SortOrder) + 1;
+
+                await _dataRepository.SaveUserPhotos(userId, new[]
+                {
+                    new UserPhoto
+                    {
+                        UserId = userId,
+                        ObjectName = uploadResult.ObjectName,
+                        ContentType = photo.ContentType ?? string.Empty,
+                        SortOrder = nextSortOrder
+                    }
+                });
+
+                TempData["PhotoUploadSuccess"] = "Фотография добавлена.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to add profile photo for user {UserId}", userId);
+                TempData["PhotoUploadError"] = "Не удалось загрузить фотографию. Попробуйте позже.";
+            }
+
+            return RedirectToAction(nameof(GetUserPage));
         }
     }
 }

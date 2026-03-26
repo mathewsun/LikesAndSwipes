@@ -395,6 +395,27 @@ input {
     color: var(--text-light);
 }
 
+.user-photo-upload-form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.user-photo-upload-input {
+    max-width: 340px;
+}
+
+.user-photo-upload-success {
+    color: #198754;
+    margin-bottom: 12px;
+}
+
+.user-photo-upload-error {
+    color: #dc3545;
+    margin-bottom: 12px;
+}
+
 .user-photo-grid {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -416,6 +437,15 @@ input {
 }
 
 @media (max-width: 768px) {
+    .user-photo-upload-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .user-photo-upload-input {
+        max-width: 100%;
+    }
+
     .user-photo-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
