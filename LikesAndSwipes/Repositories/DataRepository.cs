@@ -137,7 +137,7 @@ namespace LikesAndSwipes.Repositories
         {
             return await _context.UserPhotos
                 .Where(photo => photo.UserId == userId)
-                .OrderBy(photo => photo.SortOrder)
+                .OrderByDescending(photo => photo.SortOrder)
                 .ThenBy(photo => photo.Created)
                 .ToListAsync();
         }
