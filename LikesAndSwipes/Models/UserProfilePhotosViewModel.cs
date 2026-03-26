@@ -5,5 +5,7 @@ namespace LikesAndSwipes.Models
         public string UserId { get; set; } = string.Empty;
 
         public List<UserPhoto> Photos { get; set; } = new();
+
+        public bool IsCurrentUserProfile { get; set; }
     }
 }

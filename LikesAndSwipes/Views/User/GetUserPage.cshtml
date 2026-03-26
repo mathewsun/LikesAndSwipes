@@ -9,6 +9,25 @@
         <a asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a>
     </div>
 
+    @if (Model.IsCurrentUserProfile)
+    {
+        <form asp-controller="User" asp-action="AddPhoto" method="post" enctype="multipart/form-data" class="user-photo-upload-form">
+            @Html.AntiForgeryToken()
+            <input type="file" name="photo" accept="image/*" class="form-control user-photo-upload-input" required />
+            <button type="submit" class="btn btn-primary">Добавить фото</button>
+        </form>
+
+        @if (TempData["PhotoUploadSuccess"] is string successMessage)
+        {
+            <p class="user-photo-upload-success">@successMessage</p>
+        }
+
+        @if (TempData["PhotoUploadError"] is string errorMessage)
+        {
+            <p class="user-photo-upload-error">@errorMessage</p>
+        }
+    }
+
     @if (Model.Photos.Count == 0)
     {
         <p class="user-profile-empty">Фотографии пока не загружены.</p>
