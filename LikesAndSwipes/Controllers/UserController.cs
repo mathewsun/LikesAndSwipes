@@ -114,5 +114,38 @@ namespace LikesAndSwipes.Controllers
 
             return RedirectToAction(nameof(GetUserPage));
         }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost("user/photo/{photoId:int}/delete")]
+        public async Task<IActionResult> DeletePhoto(int photoId, CancellationToken cancellationToken)
+        {
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Challenge();
+            }
+
+            var photo = await _dataRepository.GetUserPhoto(userId, photoId);
+            if (photo is null)
+            {
+                TempData["PhotoUploadError"] = "Фотография не найдена или уже удалена.";
+                return RedirectToAction(nameof(GetUserPage));
+            }
+
+            try
+            {
+                await _minioStorageService.DeleteAsync(photo.ObjectName, cancellationToken);
+                await _dataRepository.DeleteUserPhoto(photo);
+                TempData["PhotoUploadSuccess"] = "Фотография удалена.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to delete profile photo {PhotoId} for user {UserId}", photoId, userId);
+                TempData["PhotoUploadError"] = "Не удалось удалить фотографию. Попробуйте позже.";
+            }
+
+            return RedirectToAction(nameof(GetUserPage));
+        }
     }
 }
