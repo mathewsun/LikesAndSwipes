@@ -1,5 +1,6 @@
 using LikesAndSwipes.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace LikesAndSwipes.Controllers;
 
@@ -7,6 +8,8 @@ namespace LikesAndSwipes.Controllers;
 [ApiController]
 public class MinioController : ControllerBase
 {
+    private static readonly FileExtensionContentTypeProvider ContentTypeProvider = new();
+    private static readonly TimeSpan BrowserCacheLifetime = TimeSpan.FromDays(365);
     private readonly IMinioStorageService _minioStorageService;
 
     public MinioController(IMinioStorageService minioStorageService)
@@ -43,7 +46,14 @@ public class MinioController : ControllerBase
             return NotFound();
         }
 
-        return File(stream, "application/octet-stream", objectName);
+        Response.Headers.CacheControl = $"public,max-age={(int)BrowserCacheLifetime.TotalSeconds},immutable";
+        Response.Headers.Expires = DateTimeOffset.UtcNow.Add(BrowserCacheLifetime).ToString("R");
+
+        var contentType = ContentTypeProvider.TryGetContentType(objectName, out var detectedContentType)
+            ? detectedContentType
+            : "application/octet-stream";
+
+        return File(stream, contentType);
     }
 
     [HttpGet("presigned-url/{*objectName}")]
