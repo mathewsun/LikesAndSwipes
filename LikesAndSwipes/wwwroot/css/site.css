@@ -381,7 +381,7 @@ input {
 }
 
 .user-profile-page {
-    width: min(1200px, 95vw);
+    width: min(1500px, 95vw);
 }
 
 .user-profile-header {
@@ -418,15 +418,17 @@ input {
 
 .user-photo-grid {
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(5, 280px);
+    justify-content: center;
     gap: 12px;
 }
 
 .user-photo-grid-item {
+    width: 280px;
+    height: 370px;
     border-radius: 12px;
     overflow: hidden;
     background: #f1f1f4;
-    aspect-ratio: 1 / 1;
 }
 
 .user-photo-grid-item img {
@@ -448,5 +450,11 @@ input {
 
     .user-photo-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .user-photo-grid-item {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 280 / 370;
     }
 }
