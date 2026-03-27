@@ -142,6 +142,18 @@ namespace LikesAndSwipes.Repositories
                 .ToListAsync();
         }
 
+        public async Task<UserPhoto?> GetUserPhoto(string userId, int photoId)
+        {
+            return await _context.UserPhotos
+                .FirstOrDefaultAsync(photo => photo.UserId == userId && photo.Id == photoId);
+        }
+
+        public async Task DeleteUserPhoto(UserPhoto photo)
+        {
+            _context.UserPhotos.Remove(photo);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task SaveUserRegistrationData(User user)
         {
             var currentUser = await _context.Users.OfType<User>().FirstOrDefaultAsync(x => x.Id == user.Id);

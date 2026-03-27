@@ -424,11 +424,38 @@ input {
 }
 
 .user-photo-grid-item {
+    position: relative;
     width: 280px;
     height: 370px;
     border-radius: 12px;
     overflow: hidden;
     background: #f1f1f4;
+}
+
+.user-photo-delete-form {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 2;
+}
+
+.user-photo-delete-button {
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 50%;
+    background: #dc3545;
+    color: #fff;
+    font-size: 18px;
+    line-height: 24px;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.user-photo-grid-item:hover .user-photo-delete-button {
+    opacity: 1;
 }
 
 .user-photo-grid-item img {
