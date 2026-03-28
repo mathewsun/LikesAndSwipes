@@ -23,6 +23,7 @@ using System.Text.Encodings.Web;
 using System.Threading;
 using System.IO;
 using System.Threading.Tasks;
+using LikesAndSwipes.Extensions;
 
 namespace LikesAndSwipes.Areas.Identity.Pages.Account
 {
@@ -174,10 +175,21 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    string newUserName = StringExtensions.ConvertToLatin(Input.Name);
+
+                    //checking username not exist
+                    while (await _dataRepository.CheckUserNameExist(newUserName))
+                    {
+                        Random random = new Random();
+                        int randomNumber = random.Next(100, 1001);
+                        newUserName = newUserName + randomNumber.ToString();
+                    }
+
                     User newUser = new User()
                     {
                         Id = user.Id,
                         FirstName = Input.Name,
+                        UserName = newUserName,
                         Sex = Input.Sex ?? false,
                         RomanticMen = Input.RomanticMen,
                         RomanticWomen = Input.RomanticWomen,

@@ -113,6 +113,12 @@ namespace LikesAndSwipes.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<bool> CheckUserNameExist(string userName)
+        {
+            var user = await _context.Users.OfType<User>().FirstOrDefaultAsync(x => x.UserName == userName);
+
+            return user is not null;
+        }
 
         public async Task SaveUserPhotos(string userId, IEnumerable<UserPhoto> photos)
         {
@@ -165,7 +171,7 @@ namespace LikesAndSwipes.Repositories
 
             currentUser.FirstName = user.FirstName;
             currentUser.Age = user.Age;
-            currentUser.UserName = user.FirstName;
+            currentUser.UserName = user.UserName;
             currentUser.RomanticMen = user.RomanticMen;
             currentUser.RomanticWomen = user.RomanticWomen;
             currentUser.FriendshipMen = user.FriendshipMen;
