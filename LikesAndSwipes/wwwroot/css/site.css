@@ -352,11 +352,41 @@ input {
     }
 
 .preference-group {
+    position: relative;
+    overflow: hidden;
     border: 1px solid #ddd;
     border-radius: 12px;
     padding: 12px 14px;
     background: #f8f8fb;
     margin-bottom: 12px;
+}
+
+.romantic-preference-group {
+    background: linear-gradient(135deg, #ffe4f3 0%, #ffc1e1 45%, #ff9dd0 100%);
+}
+
+.friendship-preference-group {
+    background: linear-gradient(135deg, #fff6c7 0%, #ffe38a 50%, #ffd45a 100%);
+}
+
+.romantic-preference-group::after,
+.friendship-preference-group::after {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 22px;
+    letter-spacing: 2px;
+    pointer-events: none;
+}
+
+.romantic-preference-group::after {
+    content: "♥ ♥";
+    color: rgba(220, 45, 140, 0.4);
+}
+
+.friendship-preference-group::after {
+    content: "★ ★";
+    color: rgba(191, 133, 0, 0.45);
 }
 
 .preference-group h3 {
