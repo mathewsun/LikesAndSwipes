@@ -380,12 +380,12 @@ input {
 }
 
 .romantic-preference-group::after {
-    content: "♥ ♥";
+    content: "♥";
     color: rgba(220, 45, 140, 0.4);
 }
 
 .friendship-preference-group::after {
-    content: "★ ★";
+    content: "★";
     color: rgba(191, 133, 0, 0.45);
 }
 
