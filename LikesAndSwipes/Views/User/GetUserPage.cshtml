@@ -9,23 +9,20 @@
         <a asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a>
     </div>
 
-    @if (Model.IsCurrentUserProfile)
+    <form asp-controller="User" asp-action="AddPhoto" method="post" enctype="multipart/form-data" class="user-photo-upload-form">
+        @Html.AntiForgeryToken()
+        <input type="file" name="photo" accept="image/*" class="form-control user-photo-upload-input" required />
+        <button type="submit" class="btn btn-primary" style="width: 150px; flex: none;">Добавить фото</button>
+    </form>
+
+    @if (TempData["PhotoUploadSuccess"] is string successMessage)
     {
-        <form asp-controller="User" asp-action="AddPhoto" method="post" enctype="multipart/form-data" class="user-photo-upload-form">
-            @Html.AntiForgeryToken()
-            <input type="file" name="photo" accept="image/*" class="form-control user-photo-upload-input" required />
-            <button type="submit" class="btn btn-primary" style="width: 150px; flex: none;">Добавить фото</button>
-        </form>
+        <p class="user-photo-upload-success">@successMessage</p>
+    }
 
-        @if (TempData["PhotoUploadSuccess"] is string successMessage)
-        {
-            <p class="user-photo-upload-success">@successMessage</p>
-        }
-
-        @if (TempData["PhotoUploadError"] is string errorMessage)
-        {
-            <p class="user-photo-upload-error">@errorMessage</p>
-        }
+    @if (TempData["PhotoUploadError"] is string errorMessage)
+    {
+        <p class="user-photo-upload-error">@errorMessage</p>
     }
 
     @if (Model.Photos.Count == 0)
@@ -38,18 +35,15 @@
             @foreach (var photo in Model.Photos)
             {
                 <div class="user-photo-grid-item">
-                    @if (Model.IsCurrentUserProfile)
-                    {
-                        <form asp-controller="User"
-                              asp-action="DeletePhoto"
-                              asp-route-photoId="@photo.Id"
-                              method="post"
-                              class="user-photo-delete-form"
-                              onsubmit="return confirm('Удалить эту фотографию?');">
-                            @Html.AntiForgeryToken()
-                            <button type="submit" class="user-photo-delete-button" aria-label="Удалить фотографию">×</button>
-                        </form>
-                    }
+                    <form asp-controller="User"
+                          asp-action="DeletePhoto"
+                          asp-route-photoId="@photo.Id"
+                          method="post"
+                          class="user-photo-delete-form"
+                          onsubmit="return confirm('Удалить эту фотографию?');">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="user-photo-delete-button" aria-label="Удалить фотографию">×</button>
+                    </form>
                     <img src="/api/Minio/download/@photo.ObjectName" alt="User photo" loading="lazy" />
                 </div>
             }

@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Profile";
+}
+<h1></h1>
+
+<section class="user-profile-page">
+    @if (Model.Photos.Count == 0)
+    {
+        <p class="user-profile-empty">Фотографии пока не загружены.</p>
+    }
+    else
+    {
+        <div class="user-photo-grid">
+            @foreach (var photo in Model.Photos)
+            {
+                <div class="user-photo-grid-item">
+                    <img src="/api/Minio/download/@photo.ObjectName" alt="User photo" loading="lazy" />
+                </div>
+            }
+        </div>
+    }
+</section>

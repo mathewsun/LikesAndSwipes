@@ -44,27 +44,29 @@ namespace LikesAndSwipes.Controllers
 
             var viewModel = new UserProfilePhotosViewModel
             {
-                UserId = userId,
-                Photos = photos,
-                IsCurrentUserProfile = string.Equals(_userManager.GetUserId(User), userId, StringComparison.Ordinal)
+                Photos = photos
             };
 
             return View(viewModel);
         }
 
-        [HttpGet("user/{id}")]
-        public async Task<IActionResult> GetUserPageWithId(string id)
+        /// <summary>
+        /// Watch user profile page by username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        [HttpGet("user/{username}")]
+        public async Task<IActionResult> GetUserPageWithUserName(string username)
         {
-            var photos = await _dataRepository.GetUserPhotos(id);
+            var photos = await _dataRepository.GetUserPhotosByUserName(username);
 
             var viewModel = new UserProfilePhotosViewModel
             {
-                UserId = id,
-                Photos = photos,
-                IsCurrentUserProfile = string.Equals(_userManager.GetUserId(User), id, StringComparison.Ordinal)
+                UserName = username,
+                Photos = photos
             };
 
-            return View("User", viewModel);
+            return View(viewModel);
         }
 
         [Authorize]
