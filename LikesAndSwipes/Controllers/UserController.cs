@@ -26,12 +26,14 @@ namespace LikesAndSwipes.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// My user profile page
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("user")]
-        public async Task<IActionResult> GetUserPage(string? id)
+        public async Task<IActionResult> GetUserPage()
         {
-            var userId = string.IsNullOrWhiteSpace(id)
-                ? _userManager.GetUserId(User)
-                : id;
+            var userId = _userManager.GetUserId(User);
 
             if (string.IsNullOrWhiteSpace(userId))
             {
