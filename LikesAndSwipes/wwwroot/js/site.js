@@ -1,5 +1,5 @@
 ﻿let currentStep = 1;
-const totalSteps = 7;
+const totalSteps = 8;
 
 const steps = document.querySelectorAll(".form-step");
 const progressBars = document.querySelectorAll(".progress-bar");
@@ -10,6 +10,7 @@ const romanticPreferenceGroup = document.getElementById("romanticPreferenceGroup
 const romanticMenOption = document.getElementById("romanticMenOption");
 const romanticWomenOption = document.getElementById("romanticWomenOption");
 const birthDayInput = document.getElementById("birthDayInput");
+const addressInput = document.getElementById("addressInput");
 
 function updateRomanticPreferenceOrder(selectedValue) {
     if (!romanticPreferenceGroup || !romanticMenOption || !romanticWomenOption) {
@@ -101,6 +102,14 @@ document.querySelectorAll(".next-btn").forEach(btn => {
             }
         }
 
+        if (currentStep === 7) {
+            const addressValue = addressInput?.value?.trim();
+            if (!addressValue) {
+                alert("Please enter your address.");
+                return;
+            }
+        }
+
         currentStep++;
         updateUI();
     });
@@ -185,6 +194,7 @@ function updatePhotoCount() {
 
 updateUI();
 updateRomanticPreferenceOrder($('input[name="Input.Sex"]:checked').val());
+initGoogleAddressAutocomplete();
 
 if (birthDayInput) {
     const minAgeDate = new Date();
@@ -247,3 +257,43 @@ document.getElementById("registerBtn").addEventListener("click", () => {
 
     //alert("Registration complete 🎉");
 });
+
+function initGoogleAddressAutocomplete() {
+    if (!addressInput) {
+        return;
+    }
+
+    const apiKey = window.googleMapsApiKey;
+    if (!apiKey) {
+        return;
+    }
+
+    const script = document.getElementById("googlePlacesScript");
+    if (!script) {
+        return;
+    }
+
+    if (!script.src) {
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places&loading=async`;
+    }
+
+    script.addEventListener("load", attachGoogleAutocomplete, { once: true });
+}
+
+function attachGoogleAutocomplete() {
+    if (!window.google?.maps?.places || !addressInput) {
+        return;
+    }
+
+    const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+        fields: ["formatted_address"],
+        types: ["address"]
+    });
+
+    autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (place?.formatted_address) {
+            addressInput.value = place.formatted_address;
+        }
+    });
+}

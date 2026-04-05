@@ -38,6 +38,8 @@ namespace LikesAndSwipes.Models
 
         public DateTime BirthDay { get; set; }
 
+        public string Address { get; set; }
+
         public ICollection<UserPhoto> Photos { get; set; } = new List<UserPhoto>();
     }
 }
