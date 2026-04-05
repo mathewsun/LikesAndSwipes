@@ -145,9 +145,11 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             public bool FriendshipWomen { get; set; }
 
             /// <summary>
-            ///     User Age
+            ///     User birthday
             /// </summary>
-            public int Age { get; set; }
+            [Required]
+            [DataType(DataType.Date)]
+            public DateTime BirthDay { get; set; }
 
             /// <summary>
             ///     Selected interests during registration
@@ -195,7 +197,7 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                         RomanticWomen = Input.RomanticWomen,
                         FriendshipMen = Input.FriendshipMen,
                         FriendshipWomen = Input.FriendshipWomen,
-                        Age = Input.Age
+                        BirthDay = Input.BirthDay
                     };
 
                     await _dataRepository.SaveUserRegistrationData(newUser);
