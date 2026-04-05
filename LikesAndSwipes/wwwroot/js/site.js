@@ -87,10 +87,10 @@ document.querySelectorAll(".next-btn").forEach(btn => {
                 age--;
             }
 
-            if (age < 18) {
-                alert("You must be at least 18 years old.");
-                return;
-            }
+            //if (age < 18) {
+            //    alert("You must be at least 18 years old.");
+            //    return;
+            //}
         }
 
         if (currentStep === 5) {
@@ -188,7 +188,7 @@ updateRomanticPreferenceOrder($('input[name="Input.Sex"]:checked').val());
 
 if (birthDayInput) {
     const minAgeDate = new Date();
-    minAgeDate.setFullYear(minAgeDate.getFullYear() - 18);
+    minAgeDate.setFullYear(minAgeDate.getFullYear());
     birthDayInput.max = minAgeDate.toISOString().split("T")[0];
 }
 
