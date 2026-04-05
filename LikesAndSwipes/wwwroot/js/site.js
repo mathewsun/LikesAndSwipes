@@ -9,6 +9,7 @@ const genderOptions = document.querySelectorAll(".gender-option");
 const romanticPreferenceGroup = document.getElementById("romanticPreferenceGroup");
 const romanticMenOption = document.getElementById("romanticMenOption");
 const romanticWomenOption = document.getElementById("romanticWomenOption");
+const birthDayInput = document.getElementById("birthDayInput");
 
 function updateRomanticPreferenceOrder(selectedValue) {
     if (!romanticPreferenceGroup || !romanticMenOption || !romanticWomenOption) {
@@ -71,11 +72,25 @@ document.querySelectorAll(".next-btn").forEach(btn => {
         }
 
         if (currentStep === 4) {
-            const age = parseInt(document.getElementById("ageInput").value);
-            if (!age || age < 18) {
-                alert("You must be at least 18 years old.");
+            const birthDayValue = document.getElementById("birthDayInput").value;
+            if (!birthDayValue) {
+                alert("Please enter your birthday.");
                 return;
             }
+
+            const birthDay = new Date(birthDayValue);
+            const now = new Date();
+            let age = now.getFullYear() - birthDay.getFullYear();
+            const monthDiff = now.getMonth() - birthDay.getMonth();
+
+            if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < birthDay.getDate())) {
+                age--;
+            }
+
+            //if (age < 18) {
+            //    alert("You must be at least 18 years old.");
+            //    return;
+            //}
         }
 
         if (currentStep === 5) {
@@ -170,6 +185,12 @@ function updatePhotoCount() {
 
 updateUI();
 updateRomanticPreferenceOrder($('input[name="Input.Sex"]:checked').val());
+
+if (birthDayInput) {
+    const minAgeDate = new Date();
+    minAgeDate.setFullYear(minAgeDate.getFullYear());
+    birthDayInput.max = minAgeDate.toISOString().split("T")[0];
+}
 
 /* Interests logic */
 const interests = document.querySelectorAll(".interest");

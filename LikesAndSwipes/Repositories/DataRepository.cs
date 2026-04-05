@@ -185,7 +185,7 @@ namespace LikesAndSwipes.Repositories
             }
 
             currentUser.FirstName = user.FirstName;
-            currentUser.Age = user.Age;
+            currentUser.BirthDay = user.BirthDay;
             currentUser.UserName = user.UserName;
             currentUser.RomanticMen = user.RomanticMen;
             currentUser.RomanticWomen = user.RomanticWomen;
