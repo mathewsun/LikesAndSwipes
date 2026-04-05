@@ -95,7 +95,7 @@ document.querySelectorAll(".next-btn").forEach(btn => {
 
         if (currentStep === 5) {
             const uploaded = document.querySelectorAll(".photo-box img").length;
-            if (uploaded < 2) {
+            if (uploaded < 0) {
                 alert("Please upload at least 2 photos.");
                 return;
             }
@@ -203,7 +203,7 @@ interests.forEach(btn => {
 
         const selected = document.querySelectorAll(".interest.selected");
 
-        if (selected.length > 5) {
+        if (selected.length > 0) {
             btn.classList.remove("selected");
             return;
         }
