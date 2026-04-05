@@ -11,6 +11,10 @@ const romanticMenOption = document.getElementById("romanticMenOption");
 const romanticWomenOption = document.getElementById("romanticWomenOption");
 const birthDayInput = document.getElementById("birthDayInput");
 const addressInput = document.getElementById("addressInput");
+const useCurrentLocationBtn = document.getElementById("useCurrentLocationBtn");
+let hasPromptedForGeolocation = false;
+let hasInitializedAddressAutocomplete = false;
+let pendingGeolocationCoordinates = null;
 
 function updateRomanticPreferenceOrder(selectedValue) {
     if (!romanticPreferenceGroup || !romanticMenOption || !romanticWomenOption) {
@@ -43,6 +47,10 @@ function updateUI() {
     });
 
     currentStepText.textContent = currentStep;
+
+    if (currentStep === 7) {
+        promptAddressFromGeolocation();
+    }
 }
 
 document.querySelectorAll(".next-btn").forEach(btn => {
@@ -273,17 +281,23 @@ function initGoogleAddressAutocomplete() {
         return;
     }
 
+    if (window.google?.maps?.places) {
+        attachGoogleAutocomplete();
+        return;
+    }
+
     if (!script.src) {
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places&loading=async`;
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places&loading=async&callback=onGoogleMapsReady`;
     }
 
     script.addEventListener("load", attachGoogleAutocomplete, { once: true });
 }
 
 function attachGoogleAutocomplete() {
-    if (!window.google?.maps?.places || !addressInput) {
+    if (hasInitializedAddressAutocomplete || !window.google?.maps?.places || !addressInput) {
         return;
     }
+    hasInitializedAddressAutocomplete = true;
 
     const autocomplete = new google.maps.places.Autocomplete(addressInput, {
         fields: ["formatted_address"],
@@ -296,4 +310,71 @@ function attachGoogleAutocomplete() {
             addressInput.value = place.formatted_address;
         }
     });
+
+    if (pendingGeolocationCoordinates) {
+        fillAddressFromCoordinates(pendingGeolocationCoordinates.latitude, pendingGeolocationCoordinates.longitude);
+        pendingGeolocationCoordinates = null;
+    }
+}
+
+window.onGoogleMapsReady = function () {
+    attachGoogleAutocomplete();
+};
+
+function promptAddressFromGeolocation() {
+    if (hasPromptedForGeolocation || !addressInput || addressInput.value.trim()) {
+        return;
+    }
+
+    hasPromptedForGeolocation = true;
+
+    if (!navigator.geolocation) {
+        return;
+    }
+
+    const shouldDetectAddress = window.confirm("Allow browser geolocation to auto-fill your address?");
+    if (!shouldDetectAddress) {
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        position => {
+            fillAddressFromCoordinates(position.coords.latitude, position.coords.longitude);
+        },
+        () => {
+            // User denied permission or location is unavailable.
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+}
+
+if (useCurrentLocationBtn) {
+    useCurrentLocationBtn.addEventListener("click", () => {
+        hasPromptedForGeolocation = false;
+        promptAddressFromGeolocation();
+    });
+}
+
+function fillAddressFromCoordinates(latitude, longitude) {
+    if (!addressInput) {
+        return;
+    }
+
+    if (!window.google?.maps?.Geocoder) {
+        pendingGeolocationCoordinates = { latitude, longitude };
+        return;
+    }
+
+    const geocoder = new google.maps.Geocoder();
+    geocoder
+        .geocode({ location: { lat: latitude, lng: longitude } })
+        .then(response => {
+            const result = response.results?.[0];
+            if (result?.formatted_address) {
+                addressInput.value = result.formatted_address;
+            }
+        })
+        .catch(() => {
+            // Ignore geocoding errors.
+        });
 }
