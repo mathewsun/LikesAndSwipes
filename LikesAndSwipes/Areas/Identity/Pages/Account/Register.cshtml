@@ -22,10 +22,11 @@
             <div class="progress-bar"></div>
             <div class="progress-bar"></div>
             <div class="progress-bar"></div>
+            <div class="progress-bar"></div>
         </div>
 
         <span class="step-text">
-            Step <span id="currentStep">1</span> of 7
+            Step <span id="currentStep">1</span> of 8
         </span>
 
         <!-- STEP 1 -->
@@ -163,6 +164,16 @@
 
         <!-- STEP 7 -->
         <div class="form-step" data-step="7">
+            <h2>What is your address?</h2>
+            <input type="text" asp-for="Input.Address" id="addressInput" placeholder="Start typing your address" autocomplete="street-address" />
+            <div class="button-row">
+                <button type="button" class="btn-secondary back-btn">Back</button>
+                <button type="button" class="btn-primary next-btn">Continue</button>
+            </div>
+        </div>
+
+        <!-- STEP 8 -->
+        <div class="form-step" data-step="8">
             <h2>Create account</h2>
             <input type="text" asp-for="Input.Email" id="email" placeholder="Email or phone" style="font-size: 20px;" />
             <input type="password" asp-for="Input.Password" id="password" placeholder="Password" style="font-size: 20px;" />
@@ -178,4 +189,8 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        window.googleMapsApiKey = "@(Environment.GetEnvironmentVariable("GOOGLE_MAPS_API_KEY") ?? string.Empty)";
+    </script>
+    <script async defer id="googlePlacesScript"></script>
 }

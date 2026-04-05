@@ -155,6 +155,12 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             ///     Selected interests during registration
             /// </summary>
             public List<string> SelectedInterests { get; set; } = new();
+
+            /// <summary>
+            ///     User address
+            /// </summary>
+            [Required]
+            public string Address { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -197,7 +203,8 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                         RomanticWomen = Input.RomanticWomen,
                         FriendshipMen = Input.FriendshipMen,
                         FriendshipWomen = Input.FriendshipWomen,
-                        BirthDay = Input.BirthDay
+                        BirthDay = Input.BirthDay,
+                        Address = Input.Address
                     };
 
                     await _dataRepository.SaveUserRegistrationData(newUser);
