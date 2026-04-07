@@ -51,8 +51,8 @@ The Docker Compose stack now includes:
 Create a `.env` file in the repository root:
 
 ```env
-DOMAIN=your-domain.com
-CERTBOT_EMAIL=admin@your-domain.com
+DOMAIN=likesandswipes.site
+CERTBOT_EMAIL=admin@likesandswipes.site
 ```
 
 Make sure your DNS `A/AAAA` record for `DOMAIN` points to this host before requesting certificates.
