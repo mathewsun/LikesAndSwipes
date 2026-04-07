@@ -37,3 +37,38 @@ The project now includes an API for working with MinIO objects:
 - `DELETE /api/minio/{objectName}` — delete an object from the bucket.
 
 Configuration is read from the `Minio` section in `appsettings.json` or from environment variables such as `Minio__Endpoint` and `Minio__BucketName`.
+
+
+## HTTPS with Certbot (auto-renew)
+
+The Docker Compose stack now includes:
+
+- `nginx` as a reverse proxy on ports `80` and `443`.
+- `certbot` for Let's Encrypt certificate renewal every 12 hours.
+
+### 1) Configure your domain + email
+
+Create a `.env` file in the repository root:
+
+```env
+DOMAIN=your-domain.com
+CERTBOT_EMAIL=admin@your-domain.com
+```
+
+Make sure your DNS `A/AAAA` record for `DOMAIN` points to this host before requesting certificates.
+
+### 2) Create the initial certificate
+
+Run once:
+
+```bash
+DOMAIN=your-domain.com CERTBOT_EMAIL=admin@your-domain.com ./scripts/init-letsencrypt.sh
+```
+
+### 3) Start the full stack
+
+```bash
+docker compose up -d --build
+```
+
+After that, certbot auto-renews in the background, and nginx reloads periodically to pick up renewed certificates.
