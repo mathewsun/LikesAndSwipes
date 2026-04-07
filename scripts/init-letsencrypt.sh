@@ -3,7 +3,7 @@ set -euo pipefail
 
 if [[ -z "${DOMAIN:-}" || -z "${CERTBOT_EMAIL:-}" ]]; then
   echo "DOMAIN and CERTBOT_EMAIL must be set."
-  echo "Example: DOMAIN=example.com CERTBOT_EMAIL=admin@example.com ./scripts/init-letsencrypt.sh"
+  echo "Example: DOMAIN=likesandswipes.site CERTBOT_EMAIL=admin@likesandswipes.site ./scripts/init-letsencrypt.sh"
   exit 1
 fi
 
