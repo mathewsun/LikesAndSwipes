@@ -62,7 +62,7 @@ Make sure your DNS `A/AAAA` record for `DOMAIN` points to this host before reque
 Run once:
 
 ```bash
-DOMAIN=your-domain.com CERTBOT_EMAIL=admin@your-domain.com ./scripts/init-letsencrypt.sh
+DOMAIN=likesandswipes.site CERTBOT_EMAIL=admin@likesandswipes.site init-letsencrypt.sh
 ```
 
 ### 3) Start the full stack
