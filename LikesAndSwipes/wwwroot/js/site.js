@@ -194,7 +194,7 @@ function updatePhotoCount() {
 
 updateUI();
 updateRomanticPreferenceOrder($('input[name="Input.Sex"]:checked').val());
-initGoogleAddressAutocomplete();
+initAddressAutocomplete();
 
 if (birthDayInput) {
     const minAgeDate = new Date();
@@ -258,48 +258,11 @@ document.getElementById("registerBtn").addEventListener("click", () => {
     //alert("Registration complete 🎉");
 });
 
-function initGoogleAddressAutocomplete() {
+function initAddressAutocomplete() {
     if (!addressInput) {
         return;
     }
 
-    if (window.google?.maps?.places) {
-        attachGoogleAutocomplete();
-        return;
-    }
-
-    const apiKey = window.googleMapsApiKey;
-    if (!apiKey) {
-        return;
-    }
-
-    const script = document.getElementById("googlePlacesScript");
-    if (!script) {
-        return;
-    }
-
-    if (!script.src) {
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=places&loading=async`;
-    }
-
-    script.addEventListener("load", attachGoogleAutocomplete, { once: true });
+    
 }
 
-function attachGoogleAutocomplete() {
-    const googleMaps = window.google?.maps;
-    if (!googleMaps?.places || !addressInput) {
-        return;
-    }
-
-    const autocomplete = new googleMaps.places.Autocomplete(addressInput, {
-        fields: ["formatted_address"],
-        types: ["address"]
-    });
-
-    autocomplete.addListener("place_changed", () => {
-        const place = autocomplete.getPlace();
-        if (place?.formatted_address) {
-            addressInput.value = place.formatted_address;
-        }
-    });
-}
