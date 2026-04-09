@@ -61,8 +61,8 @@ Make sure your DNS `A/AAAA` record for `DOMAIN` points to this host before reque
 
 Run once:
 
-```bash
-DOMAIN=likesandswipes.site CERTBOT_EMAIL=admin@likesandswipes.site init-letsencrypt.sh
+```git bash in Windows
+MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL='*' ./init-letsencrypt.sh
 ```
 
 ### 3) Start the full stack
