@@ -57,13 +57,25 @@ CERTBOT_EMAIL=admin@likesandswipes.site
 
 Make sure your DNS `A/AAAA` record for `DOMAIN` points to this host before requesting certificates.
 
-### 2) Create the initial certificate
+### 2-1) Remove nginx ssl
+
+\docker\nginx\conf.d\default.conf
+
+### 2-2) Create the initial certificate
 
 Run once:
 
 ```git bash in Windows
 MSYS_NO_PATHCONV=1 MSYS2_ARG_CONV_EXCL='*' ./init-letsencrypt.sh
 ```
+
+### 2-3) Revert nginx ssl
+
+\docker\nginx\conf.d\default.conf
+
+### 2-3) Restart nginx
+
+docker compose restart nginx
 
 ### 3) Start the full stack
 
