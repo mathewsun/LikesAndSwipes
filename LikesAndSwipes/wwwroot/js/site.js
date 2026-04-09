@@ -213,7 +213,7 @@ interests.forEach(btn => {
 
         const selected = document.querySelectorAll(".interest.selected");
 
-        if (selected.length > 0) {
+        if (selected.length > 15) {
             btn.classList.remove("selected");
             return;
         }
