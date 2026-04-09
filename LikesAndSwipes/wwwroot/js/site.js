@@ -263,6 +263,11 @@ function initGoogleAddressAutocomplete() {
         return;
     }
 
+    if (window.google?.maps?.places) {
+        attachGoogleAutocomplete();
+        return;
+    }
+
     const apiKey = window.googleMapsApiKey;
     if (!apiKey) {
         return;
@@ -281,11 +286,12 @@ function initGoogleAddressAutocomplete() {
 }
 
 function attachGoogleAutocomplete() {
-    if (!window.google?.maps?.places || !addressInput) {
+    const googleMaps = window.google?.maps;
+    if (!googleMaps?.places || !addressInput) {
         return;
     }
 
-    const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+    const autocomplete = new googleMaps.places.Autocomplete(addressInput, {
         fields: ["formatted_address"],
         types: ["address"]
     });
