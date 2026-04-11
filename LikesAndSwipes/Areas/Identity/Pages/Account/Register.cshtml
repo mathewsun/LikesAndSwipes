@@ -165,7 +165,10 @@
         <!-- STEP 7 -->
         <div class="form-step" data-step="7">
             <h2>What is your address?</h2>
-            <input type="text" asp-for="Input.Address" id="addressInput" placeholder="Start typing your address" autocomplete="street-address" />
+            <input type="text" id="addressInput" asp-for="Input.Address" placeholder="Start typing your address" style="width: 300px; font-size: 14px;" />
+            <input type="hidden" id="addressLatitude" asp-for="Input.AddressLatitude" />
+            <input type="hidden" id="addressLongitude" asp-for="Input.AddressLongitude" />
+            <div id="geometry" style="margin-top: 10px; background: #EAE19D; padding: 10px 20px;"></div>
             <div class="button-row">
                 <button type="button" class="btn-secondary back-btn">Back</button>
                 <button type="button" class="btn-primary next-btn">Continue</button>
@@ -189,8 +192,9 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        window.googleMapsApiKey = "@(Environment.GetEnvironmentVariable("GOOGLE_MAPS_API_KEY") ?? string.Empty)";
+    <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXk-q6dHZSwnelPw7IxPOh-kuvobizqAM&libraries=places&callback=initAutocomplete" async defer>
     </script>
-    <script async defer id="googlePlacesScript"></script>
+
+    <script src="~/js/addressautocomplit.js" asp-append-version="true"></script>
 }

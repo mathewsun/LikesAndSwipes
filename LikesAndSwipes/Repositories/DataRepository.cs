@@ -193,6 +193,7 @@ namespace LikesAndSwipes.Repositories
             currentUser.FriendshipWomen = user.FriendshipWomen;
             currentUser.Sex = user.Sex;
             currentUser.Address = user.Address;
+            currentUser.AddressLocation = user.AddressLocation;
 
             await _context.SaveChangesAsync();
         }

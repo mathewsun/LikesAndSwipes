@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using NetTopologySuite.Geometries;
 
 namespace LikesAndSwipes.Models
 {
@@ -39,6 +40,8 @@ namespace LikesAndSwipes.Models
         public DateTime BirthDay { get; set; }
 
         public string Address { get; set; }
+
+        public Point AddressLocation { get; set; }
 
         public ICollection<UserPhoto> Photos { get; set; } = new List<UserPhoto>();
     }

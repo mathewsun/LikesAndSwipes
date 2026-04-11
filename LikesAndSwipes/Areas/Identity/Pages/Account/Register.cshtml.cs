@@ -2,28 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using LikesAndSwipes.Extensions;
 using LikesAndSwipes.Models;
 using LikesAndSwipes.Repositories;
 using LikesAndSwipes.Services;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
+using NetTopologySuite.Geometries;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
-using System.Threading;
-using System.IO;
-using System.Threading.Tasks;
-using LikesAndSwipes.Extensions;
 
 namespace LikesAndSwipes.Areas.Identity.Pages.Account
 {
@@ -161,6 +153,16 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             public string Address { get; set; }
+
+            /// <summary>
+            ///     User address latitude
+            /// </summary>
+            public double AddressLatitude { get; set; }
+
+            /// <summary>
+            ///     User address longitude
+            /// </summary>
+            public double AddressLongitude { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -204,7 +206,8 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                         FriendshipMen = Input.FriendshipMen,
                         FriendshipWomen = Input.FriendshipWomen,
                         BirthDay = Input.BirthDay,
-                        Address = Input.Address
+                        Address = Input.Address,
+                        AddressLocation = new NetTopologySuite.Geometries.Point(new Coordinate(Input.AddressLatitude, Input.AddressLongitude))
                     };
 
                     await _dataRepository.SaveUserRegistrationData(newUser);
