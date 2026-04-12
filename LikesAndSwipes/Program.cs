@@ -46,6 +46,7 @@ namespace LikesAndSwipes
             });
 
             builder.Services.AddControllersWithViews();
+            builder.Services.AddHttpClient();
             builder.Services.Configure<MinioOptions>(builder.Configuration.GetSection(MinioOptions.SectionName));
             builder.Services.AddSingleton<IMinioClient>(_ =>
             {

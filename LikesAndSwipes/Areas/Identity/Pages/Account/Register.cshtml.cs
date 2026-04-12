@@ -12,10 +12,12 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Configuration;
 using NetTopologySuite.Geometries;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
+using System.Text.Json;
 
 namespace LikesAndSwipes.Areas.Identity.Pages.Account
 {
@@ -28,6 +30,8 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IMinioStorageService _minioStorageService;
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IConfiguration _configuration;
         private DataRepository _dataRepository;
 
         public RegisterModel(
@@ -37,6 +41,8 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             IMinioStorageService minioStorageService,
+            IHttpClientFactory httpClientFactory,
+            IConfiguration configuration,
             DataRepository dataRepository)
         {
             _userManager = userManager;
@@ -46,6 +52,8 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _minioStorageService = minioStorageService;
+            _httpClientFactory = httpClientFactory;
+            _configuration = configuration;
             _dataRepository = dataRepository;
         }
 
@@ -64,6 +72,8 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
 
         [BindProperty]
         public List<IFormFile> Photos { get; set; } = new();
+
+        public string RecaptchaSiteKey => _configuration["Recaptcha:SiteKey"] ?? string.Empty;
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -175,6 +185,14 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            var recaptchaToken = Request.Form["g-recaptcha-response"].ToString();
+            var remoteIp = HttpContext.Connection.RemoteIpAddress?.ToString();
+            if (!await ValidateRecaptchaAsync(recaptchaToken, remoteIp))
+            {
+                ModelState.AddModelError(string.Empty, "Please complete Google reCAPTCHA.");
+                return Page();
+            }
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
@@ -320,6 +338,52 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
 
                 throw;
             }
+        }
+
+
+        private async Task<bool> ValidateRecaptchaAsync(string token, string? remoteIp)
+        {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                return false;
+            }
+
+            var recaptchaSecret = _configuration["Recaptcha:SecretKey"];
+            if (string.IsNullOrWhiteSpace(recaptchaSecret))
+            {
+                _logger.LogWarning("Recaptcha:SecretKey is not configured.");
+                return false;
+            }
+
+            var httpClient = _httpClientFactory.CreateClient();
+            var requestBody = new Dictionary<string, string>
+            {
+                ["secret"] = recaptchaSecret,
+                ["response"] = token
+            };
+
+            if (!string.IsNullOrWhiteSpace(remoteIp))
+            {
+                requestBody["remoteip"] = remoteIp;
+            }
+
+            using var content = new FormUrlEncodedContent(requestBody);
+            using var response = await httpClient.PostAsync("https://www.google.com/recaptcha/api/siteverify", content);
+            if (!response.IsSuccessStatusCode)
+            {
+                _logger.LogWarning("reCAPTCHA verification failed with status code {StatusCode}", response.StatusCode);
+                return false;
+            }
+
+            var responseJson = await response.Content.ReadAsStringAsync();
+            var recaptchaResponse = JsonSerializer.Deserialize<RecaptchaVerifyResponse>(responseJson);
+
+            return recaptchaResponse?.Success ?? false;
+        }
+
+        private sealed class RecaptchaVerifyResponse
+        {
+            public bool Success { get; set; }
         }
 
         private IUserEmailStore<User> GetEmailStore()
