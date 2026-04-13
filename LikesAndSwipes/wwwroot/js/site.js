@@ -244,8 +244,7 @@ document.getElementById("registerBtn").addEventListener("click", event => {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
     const confirmPassword = document.getElementById("confirmPassword").value;
-    const recaptchaToken = document.querySelector('textarea[name="g-recaptcha-response"]')?.value?.trim();
-
+    
     if (!email || !password || !confirmPassword) {
         event.preventDefault();
         alert("Please fill all fields.");
@@ -258,10 +257,6 @@ document.getElementById("registerBtn").addEventListener("click", event => {
         return;
     }
 
-    if (!recaptchaToken) {
-        event.preventDefault();
-        alert("Please complete Google reCAPTCHA.");
-    }
 });
 
 function initAddressAutocomplete() {
