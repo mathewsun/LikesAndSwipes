@@ -180,10 +180,9 @@
             <input type="text" asp-for="Input.Email" id="email" placeholder="Email or phone" style="font-size: 20px;" />
             <input type="password" asp-for="Input.Password" id="password" placeholder="Password" style="font-size: 20px;" />
             <input type="password" asp-for="Input.ConfirmPassword" id="confirmPassword" placeholder="Confirm password" style="font-size: 20px;" />
-            <div class="g-recaptcha" data-sitekey="@Model.RecaptchaSiteKey"></div>
             <div class="button-row">
                 <button type="button" class="btn-secondary back-btn">Back</button>
-                <button class="btn-primary" id="registerBtn" type="submit">Register</button>
+                <button class="btn-primary" id="registerBtn" onclick="onClickRegister()" type="submit">Register</button>
             </div>
         </div>
 
@@ -192,10 +191,11 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LfTSrQsAAAAALo1Ru9UdeHOwDzKqswse4xLvi02"></script>
+
     <script async
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXk-q6dHZSwnelPw7IxPOh-kuvobizqAM&libraries=places&callback=initAutocomplete" async defer>
     </script>
 
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script src="~/js/addressautocomplit.js" asp-append-version="true"></script>
+    <script src="~/js/register.js" asp-append-version="true"></script>
 }

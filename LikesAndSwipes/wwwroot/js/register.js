@@ -20,3 +20,10 @@
         document.getElementById('addressLongitude').value = place.geometry.location.lng();
     });
 }
+
+function onClickRegister(e) {
+    e.preventDefault();
+    grecaptcha.enterprise.ready(async () => {
+        const token = await grecaptcha.enterprise.execute('6LfTSrQsAAAAALo1Ru9UdeHOwDzKqswse4xLvi02', { action: 'LOGIN' });
+    });
+}
