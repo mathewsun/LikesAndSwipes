@@ -185,7 +185,7 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string token = "action-token", string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string token = "action-token", string __RequestVerificationToken = "", string returnUrl = null)
         {
             string projectID = "likesandswipes";
             string recaptchaKey = "6LfTSrQsAAAAAFYNDbGtLHOdc5pDB2-UGZzyskM6";
@@ -195,7 +195,7 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             var remoteIp = HttpContext.Connection.RemoteIpAddress?.ToString();
-
+            
             RecaptchaEnterpriseServiceClient client = RecaptchaEnterpriseServiceClient.Create();
 
             ProjectName projectName = new ProjectName(projectID);
@@ -242,10 +242,10 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                 ModelState.AddModelError(string.Empty, reason.ToString());
             }
 
-            
 
 
-            
+
+
 
 
             if (ModelState.IsValid)
