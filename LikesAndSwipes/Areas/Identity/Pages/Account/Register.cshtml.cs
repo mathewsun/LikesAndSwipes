@@ -271,7 +271,7 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                         newUserName = newUserName + randomNumber.ToString();
                     }
 
-                    Point addressLocation = Point.Empty;
+                    Point addressLocation = null;
                     if (Input.AddressLatitude.HasValue && Input.AddressLongitude.HasValue)
                     {
                         addressLocation = new NetTopologySuite.Geometries.Point(new Coordinate(Input.AddressLatitude.Value, Input.AddressLongitude.Value));
