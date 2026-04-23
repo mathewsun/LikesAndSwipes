@@ -170,12 +170,12 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             /// <summary>
             ///     User address latitude
             /// </summary>
-            public double AddressLatitude { get; set; }
+            public double? AddressLatitude { get; set; }
 
             /// <summary>
             ///     User address longitude
             /// </summary>
-            public double AddressLongitude { get; set; }
+            public double? AddressLongitude { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -245,15 +245,10 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                 ModelState.AddModelError(string.Empty, "The reCAPTCHA score is: " + ((decimal)response.RiskAnalysis.Score));
             }
 
-            foreach (RiskAnalysis.Types.ClassificationReason reason in response.RiskAnalysis.Reasons)
-            {
-                ModelState.AddModelError(string.Empty, reason.ToString());
-            }
-
-
-
-
-
+            //foreach (RiskAnalysis.Types.ClassificationReason reason in response.RiskAnalysis.Reasons)
+            //{
+            //    ModelState.AddModelError(string.Empty, reason.ToString());
+            //}
 
 
             if (ModelState.IsValid)
@@ -276,6 +271,12 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                         newUserName = newUserName + randomNumber.ToString();
                     }
 
+                    Point addressLocation = Point.Empty;
+                    if (Input.AddressLatitude.HasValue && Input.AddressLongitude.HasValue)
+                    {
+                        addressLocation = new NetTopologySuite.Geometries.Point(new Coordinate(Input.AddressLatitude.Value, Input.AddressLongitude.Value));
+                    }
+
                     User newUser = new User()
                     {
                         Id = user.Id,
@@ -288,7 +289,7 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                         FriendshipWomen = Input.FriendshipWomen,
                         BirthDay = Input.BirthDay,
                         Address = Input.Address,
-                        AddressLocation = new NetTopologySuite.Geometries.Point(new Coordinate(Input.AddressLatitude, Input.AddressLongitude))
+                        AddressLocation = addressLocation
                     };
 
                     await _dataRepository.SaveUserRegistrationData(newUser);
