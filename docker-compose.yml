@@ -29,8 +29,11 @@ services:
       Minio__SecretKey: likesandswipes1
       Minio__BucketName: likesandswipes-files
       Minio__UseSsl: false
+      GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/adc.json
     expose:
       - "8080"
+    volumes:
+      - ${GCP_ADC_FILE:-./secrets/gcp/adc.json}:/var/secrets/google/adc.json:ro
 
   nginx:
     image: nginx:1.27-alpine
