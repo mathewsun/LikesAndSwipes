@@ -165,7 +165,6 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             /// <summary>
             ///     User address
             /// </summary>
-            [Required]
             public string Address { get; set; }
 
             /// <summary>
@@ -185,17 +184,23 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string token = "action-token", string __RequestVerificationToken = "", string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string token, string returnUrl = null)
         {
             string projectID = "likesandswipes";
             string recaptchaKey = "6LfTSrQsAAAAALo1Ru9UdeHOwDzKqswse4xLvi02";
-            string recaptchaAction = "login";
+            string recaptchaAction = "submit";
 
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             var remoteIp = HttpContext.Connection.RemoteIpAddress?.ToString();
-            
+
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                ModelState.AddModelError(string.Empty, "reCAPTCHA token is missing.");
+                return Page();
+            }
+
             RecaptchaEnterpriseServiceClient client = RecaptchaEnterpriseServiceClient.Create();
 
             ProjectName projectName = new ProjectName(projectID);
@@ -209,7 +214,7 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                     Event = new Event()
                     {
                         SiteKey = recaptchaKey,
-                        Token = __RequestVerificationToken,
+                        Token = token,
                         ExpectedAction = recaptchaAction
                     },
                 },
@@ -235,7 +240,10 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             // https://cloud.google.com/recaptcha/docs/interpret-assessment
             System.Console.WriteLine("The reCAPTCHA score is: " + ((decimal)response.RiskAnalysis.Score));
 
-            ModelState.AddModelError(string.Empty, "The reCAPTCHA score is: " + ((decimal)response.RiskAnalysis.Score));
+            if (response.RiskAnalysis.Score < 0.5)
+            {
+                ModelState.AddModelError(string.Empty, "The reCAPTCHA score is: " + ((decimal)response.RiskAnalysis.Score));
+            }
 
             foreach (RiskAnalysis.Types.ClassificationReason reason in response.RiskAnalysis.Reasons)
             {
