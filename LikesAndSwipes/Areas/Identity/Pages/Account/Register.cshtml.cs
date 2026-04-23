@@ -188,7 +188,7 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string token = "action-token", string __RequestVerificationToken = "", string returnUrl = null)
         {
             string projectID = "likesandswipes";
-            string recaptchaKey = "6LfTSrQsAAAAAFYNDbGtLHOdc5pDB2-UGZzyskM6";
+            string recaptchaKey = "6LfTSrQsAAAAALo1Ru9UdeHOwDzKqswse4xLvi02";
             string recaptchaAction = "login";
 
             returnUrl ??= Url.Content("~/");
@@ -209,7 +209,7 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                     Event = new Event()
                     {
                         SiteKey = recaptchaKey,
-                        Token = token,
+                        Token = __RequestVerificationToken,
                         ExpectedAction = recaptchaAction
                     },
                 },
