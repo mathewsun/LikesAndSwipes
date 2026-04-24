@@ -2,8 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using Google.Api.Gax.ResourceNames;
-using Google.Cloud.RecaptchaEnterprise.V1;
 using LikesAndSwipes.Extensions;
 using LikesAndSwipes.Models;
 using LikesAndSwipes.Repositories;
@@ -20,8 +18,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
-using static Google.Cloud.RecaptchaEnterprise.V1.AnnotateAssessmentRequest.Types;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LikesAndSwipes.Areas.Identity.Pages.Account
 {
@@ -186,10 +182,6 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string token, string returnUrl = null)
         {
-            string projectID = "likesandswipes";
-            string recaptchaKey = "6LfTSrQsAAAAALo1Ru9UdeHOwDzKqswse4xLvi02";
-            string recaptchaAction = "submit";
-
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
@@ -201,55 +193,11 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
                 return Page();
             }
 
-            RecaptchaEnterpriseServiceClient client = RecaptchaEnterpriseServiceClient.Create();
-
-            ProjectName projectName = new ProjectName(projectID);
-
-            // Build the assessment request.
-            CreateAssessmentRequest createAssessmentRequest = new CreateAssessmentRequest()
+            var isRecaptchaValid = await ValidateRecaptchaAsync(token, remoteIp);
+            if (!isRecaptchaValid)
             {
-                Assessment = new Assessment()
-                {
-                    // Set the properties of the event to be tracked.
-                    Event = new Event()
-                    {
-                        SiteKey = recaptchaKey,
-                        Token = token,
-                        ExpectedAction = recaptchaAction
-                    },
-                },
-                ParentAsProjectName = projectName
-            };
-
-            Assessment response = client.CreateAssessment(createAssessmentRequest);
-
-            // Check if the token is valid.
-            if (response.TokenProperties.Valid == false)
-            {
-                ModelState.AddModelError(string.Empty, "The CreateAssessment call failed because the token was: " + response.TokenProperties.InvalidReason.ToString());
+                ModelState.AddModelError(string.Empty, "reCAPTCHA verification failed.");
             }
-
-            // Check if the expected action was executed.
-            if (response.TokenProperties.Action != recaptchaAction)
-            {
-                ModelState.AddModelError(string.Empty, "The action attribute in reCAPTCHA tag is: " + response.TokenProperties.Action.ToString());
-            }
-
-            // Get the risk score and the reason(s).
-            // For more information on interpreting the assessment, see:
-            // https://cloud.google.com/recaptcha/docs/interpret-assessment
-            System.Console.WriteLine("The reCAPTCHA score is: " + ((decimal)response.RiskAnalysis.Score));
-
-            if (response.RiskAnalysis.Score < 0.5)
-            {
-                ModelState.AddModelError(string.Empty, "The reCAPTCHA score is: " + ((decimal)response.RiskAnalysis.Score));
-            }
-
-            //foreach (RiskAnalysis.Types.ClassificationReason reason in response.RiskAnalysis.Reasons)
-            //{
-            //    ModelState.AddModelError(string.Empty, reason.ToString());
-            //}
-
 
             if (ModelState.IsValid)
             {
