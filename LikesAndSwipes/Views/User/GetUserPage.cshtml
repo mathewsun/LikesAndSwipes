@@ -6,8 +6,31 @@
 <section class="user-profile-page">
     <div class="user-profile-header">
         <h2>Обо мне:</h2>
-        
     </div>
+
+    <form asp-controller="User" asp-action="UpdateBirthDay" method="post" class="user-photo-upload-form">
+        @Html.AntiForgeryToken()
+        <label for="birthDay">Дата рождения</label>
+        <input id="birthDay"
+               type="date"
+               name="birthDay"
+               class="form-control user-photo-upload-input"
+               value="@(Model.BirthDay.HasValue ? Model.BirthDay.Value.ToString("yyyy-MM-dd") : string.Empty)"
+               max="@DateTime.UtcNow.ToString("yyyy-MM-dd")"
+               required />
+        <button type="submit" class="btn btn-primary" style="width: 220px; flex: none;">Сохранить дату рождения</button>
+    </form>
+
+    @if (TempData["BirthDaySuccess"] is string birthDaySuccessMessage)
+    {
+        <p class="user-photo-upload-success">@birthDaySuccessMessage</p>
+    }
+
+    @if (TempData["BirthDayError"] is string birthDayErrorMessage)
+    {
+        <p class="user-photo-upload-error">@birthDayErrorMessage</p>
+    }
+
     <div class="user-profile-header">
         <h2>Мои фотографии</h2>
         <a asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a>

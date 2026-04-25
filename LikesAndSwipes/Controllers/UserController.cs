@@ -41,9 +41,11 @@ namespace LikesAndSwipes.Controllers
             }
 
             var photos = await _dataRepository.GetUserPhotos(userId);
+            var currentUser = await _userManager.GetUserAsync(User);
 
             var viewModel = new UserProfilePhotosViewModel
             {
+                BirthDay = currentUser?.BirthDay,
                 Photos = photos
             };
 
@@ -147,6 +149,38 @@ namespace LikesAndSwipes.Controllers
             {
                 _logger.LogError(ex, "Failed to delete profile photo {PhotoId} for user {UserId}", photoId, userId);
                 TempData["PhotoUploadError"] = "Не удалось удалить фотографию. Попробуйте позже.";
+            }
+
+            return RedirectToAction(nameof(GetUserPage));
+        }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost("user/birthday")]
+        public async Task<IActionResult> UpdateBirthDay(DateTime birthDay)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user is null)
+            {
+                return Challenge();
+            }
+
+            if (birthDay == default || birthDay.Date > DateTime.UtcNow.Date || birthDay.Year < 1900)
+            {
+                TempData["BirthDayError"] = "Укажите корректную дату рождения.";
+                return RedirectToAction(nameof(GetUserPage));
+            }
+
+            user.BirthDay = DateTime.SpecifyKind(birthDay.Date, DateTimeKind.Utc);
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                TempData["BirthDaySuccess"] = "Дата рождения обновлена.";
+            }
+            else
+            {
+                TempData["BirthDayError"] = "Не удалось обновить дату рождения. Попробуйте позже.";
             }
 
             return RedirectToAction(nameof(GetUserPage));
