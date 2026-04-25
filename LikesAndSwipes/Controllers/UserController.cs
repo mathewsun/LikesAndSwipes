@@ -46,6 +46,10 @@ namespace LikesAndSwipes.Controllers
             var viewModel = new UserProfilePhotosViewModel
             {
                 BirthDay = currentUser?.BirthDay,
+                RomanticMen = currentUser?.RomanticMen ?? false,
+                RomanticWomen = currentUser?.RomanticWomen ?? false,
+                FriendshipMen = currentUser?.FriendshipMen ?? false,
+                FriendshipWomen = currentUser?.FriendshipWomen ?? false,
                 Photos = photos
             };
 
@@ -181,6 +185,42 @@ namespace LikesAndSwipes.Controllers
             else
             {
                 TempData["BirthDayError"] = "Не удалось обновить дату рождения. Попробуйте позже.";
+            }
+
+            return RedirectToAction(nameof(GetUserPage));
+        }
+
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [HttpPost("user/preferences")]
+        public async Task<IActionResult> UpdatePreferences(bool romanticMen, bool romanticWomen, bool friendshipMen, bool friendshipWomen)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user is null)
+            {
+                return Challenge();
+            }
+
+            if (!romanticMen && !romanticWomen && !friendshipMen && !friendshipWomen)
+            {
+                TempData["PreferenceError"] = "Выберите хотя бы одно предпочтение.";
+                return RedirectToAction(nameof(GetUserPage));
+            }
+
+            user.RomanticMen = romanticMen;
+            user.RomanticWomen = romanticWomen;
+            user.FriendshipMen = friendshipMen;
+            user.FriendshipWomen = friendshipWomen;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                TempData["PreferenceSuccess"] = "Предпочтения обновлены.";
+            }
+            else
+            {
+                TempData["PreferenceError"] = "Не удалось обновить предпочтения. Попробуйте позже.";
             }
 
             return RedirectToAction(nameof(GetUserPage));
