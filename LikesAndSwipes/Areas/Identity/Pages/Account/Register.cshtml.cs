@@ -404,7 +404,6 @@ namespace LikesAndSwipes.Areas.Identity.Pages.Account
             }
         }
 
-
         private async Task<bool> ValidateRecaptchaAsync(string token, string? remoteIp)
         {
             if (string.IsNullOrWhiteSpace(token))
