@@ -8,6 +8,47 @@
         <h2>Обо мне:</h2>
     </div>
 
+    <form asp-controller="User" asp-action="UpdatePreferences" method="post" class="user-photo-upload-form">
+        @Html.AntiForgeryToken()
+        <p>Кого вы предпочитаете встретить:</p>
+
+        <div class="preference-group romantic-preference-group" id="romanticPreferenceGroup">
+            <h3>Romantic:</h3>
+            <label class="preference-option" id="romanticMenOption">
+                <input type="checkbox" name="romanticMen" value="true" checked="@Model.RomanticMen">
+                <span>Men</span>
+            </label>
+            <label class="preference-option" id="romanticWomenOption">
+                <input type="checkbox" name="romanticWomen" value="true" checked="@Model.RomanticWomen">
+                <span>Women</span>
+            </label>
+        </div>
+
+        <div class="preference-group friendship-preference-group">
+            <h3>Friendship:</h3>
+            <label class="preference-option">
+                <input type="checkbox" name="friendshipMen" value="true" checked="@Model.FriendshipMen">
+                <span>Men</span>
+            </label>
+            <label class="preference-option">
+                <input type="checkbox" name="friendshipWomen" value="true" checked="@Model.FriendshipWomen">
+                <span>Women</span>
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 220px; flex: none;">Сохранить предпочтения</button>
+    </form>
+
+    @if (TempData["PreferenceSuccess"] is string preferenceSuccessMessage)
+    {
+        <p class="user-photo-upload-success">@preferenceSuccessMessage</p>
+    }
+
+    @if (TempData["PreferenceError"] is string preferenceErrorMessage)
+    {
+        <p class="user-photo-upload-error">@preferenceErrorMessage</p>
+    }
+
     <form asp-controller="User" asp-action="UpdateBirthDay" method="post" class="user-photo-upload-form">
         @Html.AntiForgeryToken()
         <label for="birthDay">Дата рождения</label>
