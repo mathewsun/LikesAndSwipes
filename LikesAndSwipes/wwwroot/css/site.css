@@ -359,6 +359,7 @@ input {
     padding: 12px 14px;
     background: #f8f8fb;
     margin-bottom: 12px;
+    width: 300px;
 }
 
 .romantic-preference-group {
@@ -369,15 +370,15 @@ input {
     background: linear-gradient(135deg, #fff6c7 0%, #ffe38a 50%, #ffd45a 100%);
 }
 
-.romantic-preference-group::after,
-.friendship-preference-group::after {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    font-size: 22px;
-    letter-spacing: 2px;
-    pointer-events: none;
-}
+    .romantic-preference-group::after,
+    .friendship-preference-group::after {
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        font-size: 22px;
+        letter-spacing: 2px;
+        pointer-events: none;
+    }
 
 .romantic-preference-group::after {
     content: "♥";
@@ -401,14 +402,14 @@ input {
     margin-bottom: 8px;
 }
 
-.preference-option:last-child {
-    margin-bottom: 0;
-}
+    .preference-option:last-child {
+        margin-bottom: 0;
+    }
 
-.preference-option input {
-    width: auto;
-    margin: 0;
-}
+    .preference-option input {
+        width: auto;
+        margin: 0;
+    }
 
 .user-profile-page {
     width: min(1500px, 95vw);
@@ -426,7 +427,6 @@ input {
 }
 
 .user-photo-upload-form {
-    display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 16px;
