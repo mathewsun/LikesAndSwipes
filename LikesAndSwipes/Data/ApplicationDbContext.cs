@@ -14,6 +14,8 @@ namespace LikesAndSwipes.Data
 
         public DbSet<UserPhoto> UserPhotos => Set<UserPhoto>();
 
+        public DbSet<User> Users => Set<User>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             if (Database.IsNpgsql())

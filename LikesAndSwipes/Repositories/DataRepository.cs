@@ -197,5 +197,53 @@ namespace LikesAndSwipes.Repositories
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<User>> GetUserRomanticRecomendations(string userId)
+        {
+            var userInfo = await _context.Users.FirstOrDefaultAsync(x=>x.Id == userId);
+
+            List<User> resultUsers = new List<User>();
+
+            //если мужчина
+            if (userInfo.Sex)
+            {
+                //ищет девушку
+                if (userInfo.RomanticWomen)
+                {
+                    resultUsers = await _context.Users.Where(x => x.Sex == false && x.RomanticMen).ToListAsync();
+                }
+
+                //гей, ищет парня
+                if (userInfo.RomanticMen)
+                {
+                    resultUsers = await _context.Users.Where(x => x.Sex == true && x.RomanticMen).ToListAsync();
+                }
+            }
+
+            //если девушка
+            if (userInfo.Sex == false)
+            {
+                //ищет парня
+                if (userInfo.RomanticMen)
+                {
+                    resultUsers = await _context.Users.Where(x => x.Sex == true && x.RomanticWomen).ToListAsync();
+                }
+                
+                //лесби, ищет девушку
+                if (userInfo.RomanticWomen)
+                {
+                    resultUsers = await _context.Users.Where(x => x.Sex == false && x.RomanticWomen).ToListAsync();
+                }
+            }
+
+            return resultUsers;
+        }
+
+        public async Task<List<User>> GetUserFriendshipRecomendations(string userId)
+        {
+            var result = await _context.Users.ToListAsync();
+
+            return result;
+        }
     }
 }
